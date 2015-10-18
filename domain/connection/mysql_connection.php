@@ -1,8 +1,8 @@
 <?php
 
-require_once(BASEPATH . '/tbp/config.php');
-require_once(BASEPATH . '/tbp/domain/connection/db_connection.php');
-require_once(BASEPATH . '/tbp/domain/application_exception.php');
+require_once(TBP_BASE_PATH . '/config.php');
+require_once(TBP_BASE_PATH . '/domain/connection/db_connection.php');
+require_once(TBP_BASE_PATH . '/domain/application_exception.php');
 
 class mysql_connection implements db_connection {
 

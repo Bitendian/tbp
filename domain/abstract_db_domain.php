@@ -1,6 +1,6 @@
 <?php
 
-require_once(BASEPATH . "/tbp/domain/connection/mysql_connection.php");
+require_once(TBP_BASE_PATH . "/domain/connection/mysql_connection.php");
 
 abstract class abstract_db_domain {
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once(BASEPATH . '/app/services/validators/i_validator.php');
+require_once(TBP_BASE_PATH . '/services/validators/i_validator.php');
 
 abstract class abstract_common_validator {
 	

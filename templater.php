@@ -1,8 +1,8 @@
 <?php
 
-require_once(BASEPATH . "/tbp/abstract_renderizable.php");
-require_once(BASEPATH . "/tbp/config.php");
-require_once(BASEPATH . "/tbp/util.php");
+require_once(TBP_BASE_PATH . "/abstract_renderizable.php");
+require_once(TBP_BASE_PATH . "/config.php");
+require_once(TBP_BASE_PATH . "/util.php");
 
 class templater extends abstract_renderizable {
 

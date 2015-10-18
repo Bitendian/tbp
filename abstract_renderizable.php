@@ -1,6 +1,6 @@
 <?php
 
-require_once(BASEPATH . '/tbp/interfaces/i_render.php');
+require_once(TBP_BASE_PATH . '/interfaces/i_render.php');
 
 abstract class abstract_renderizable implements i_render {
 

@@ -1,7 +1,7 @@
 <?php
 
-require_once(BASEPATH . '/tbp/interfaces/i_fetch.php');
-require_once(BASEPATH . '/tbp/abstract_renderizable.php');
+require_once(TBP_BASE_PATH . '/interfaces/i_fetch.php');
+require_once(TBP_BASE_PATH . '/abstract_renderizable.php');
 
 abstract class widget extends abstract_renderizable implements i_fetch {
 

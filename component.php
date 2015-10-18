@@ -1,8 +1,8 @@
 <?php
 
-require_once(BASEPATH . '/tbp/interfaces/i_action.php');
-require_once(BASEPATH . '/tbp/widget.php');
-require_once(BASEPATH . '/tbp/util.php');
+require_once(TBP_BASE_PATH . '/interfaces/i_action.php');
+require_once(TBP_BASE_PATH . '/widget.php');
+require_once(TBP_BASE_PATH . '/util.php');
 
 abstract class component extends widget implements i_action {
 
