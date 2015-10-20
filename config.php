@@ -65,13 +65,10 @@ class config {
 
 	public static function get_config($key = null) {
 
-		if (!defined(BASEPATH)) die('undefined BASEPATH constant');
+		if (!defined('BASEPATH')) die('undefined BASEPATH constant');
 		if (config::$instance == null) config::$instance = new config(BASEPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR);
 		if ($key == null) return config::$instance->config;
 		else if (isset(config::$instance->config->$key)) return config::$instance->config->$key;
 		return null;
 	}
 }
-
-
-
