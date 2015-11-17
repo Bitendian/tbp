@@ -40,11 +40,11 @@ class templater extends abstract_renderizable {
 	}
 
 	protected function replace() {
-		$this->replace_gettext();
 		if ($this->context != null) {
 			$this->replace_array_tags();
 			$this->replace_tags();
 		}
+		$this->replace_gettext();
 	}
 
 	protected function replace_gettext() {
@@ -59,7 +59,7 @@ class templater extends abstract_renderizable {
 		// get context properties in lowercase
 		if (isset($context) && is_object($context))
 			$context_vars = array_change_key_case(get_object_vars($context));
-		else if (isset($context) && is_array($context))
+		elseif (isset($context) && is_array($context))
 			$context_vars = array_change_key_case($context);
 		else
 			return false;
@@ -71,16 +71,16 @@ class templater extends abstract_renderizable {
 			// if exists property1 as context var $property1 is context and property2 is property
 			if (array_key_exists($property1, $context_vars))
 				return $this->r_replace_property($context_vars[$property1], $property2, $value);
-		} else if (array_key_exists($property, $context_vars)) {
+		} elseif (array_key_exists($property, $context_vars)) {
 			// is context property
 			if (!is_array($value) && is_object($context_vars[$property])) {
 				$value = $context_vars[$property]->__toString();
 				return true;
-			} else if (is_array($value) && is_object($context_vars[$property])) {
+			} elseif (is_array($value) && is_object($context_vars[$property])) {
 				return false;
-			} else if (!is_array($value) && is_array($context_vars[$property])) {
+			} elseif (!is_array($value) && is_array($context_vars[$property])) {
 				return false;
-			} else if (is_array($value) && is_array($context_vars[$property])) {
+			} elseif (is_array($value) && is_array($context_vars[$property])) {
 				// if property is an array and we expect an array is matching
 				foreach ($context_vars[$property] as $item) {
 						if (is_object($item)) $value[] = $item->__toString();
