@@ -21,7 +21,7 @@ abstract class component extends widget implements i_action {
 		$this->action($params);
 	}
 
-	public static function action_encode() {
+	public static function action_encode($action) {
 
 		return urlencode(base64_encode($action));
 	}
