@@ -1,5 +1,7 @@
 <?php
 
+if (!defined('TBP_BASE_PATH')) die('FATAL: TBP_BASE_PATH undefined');
+
 require_once(TBP_BASE_PATH . '/services/validators/i_validator.php');
 
 abstract class abstract_common_validator {

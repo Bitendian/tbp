@@ -1,5 +1,7 @@
 <?php
 
+if (!defined('TBP_BASE_PATH')) die('FATAL: TBP_BASE_PATH undefined');
+
 require_once(TBP_BASE_PATH . '/config.php');
 require_once(TBP_BASE_PATH . '/domain/connection/connection.php');
 require_once(TBP_BASE_PATH . '/domain/application_exception.php');
