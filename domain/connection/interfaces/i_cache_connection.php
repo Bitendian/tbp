@@ -2,51 +2,70 @@
 
 interface i_cache_connection {
 
-	// abre la conexion
+	// opens a connection
 	function open();
 
-	// cierra la conexion
+	// closes a connection
 	function close();
 
-	// comprueba que existen una serie de claves (clave unica o array)
+	// retrieve existing keys (works with wildcards)
+	function keys($pattern);
+
+	// checks if key(s) exists (works with arrays)
 	function exists($keys);
 
-	// elimina una serie de claves (clave unica o array)
+	// removes some key(s) (works with arrays)
 	public function remove($keys);
 
-	// almacena un valor simple en una clave
+	// removes all keys
+	public function clear();
+
+	// stores single value into key
 	function store($key, $value);
 
-	// recupera el valor simple de una clave
+	// gets a key value
 	function get($key);
 
-	// almacena una serie de valores (valor unico o array) al principio de una lista
+	// gets list cardinality
+	function list_cardinality($key);
+
+	// stores some value(s) into a list beginning (works with arrays)
 	function list_prepend($key, $values);
 
-	// almacena una serie de valores (valor unico o array) al final de una lista
+	// stores some value(s) into a list end (works with arrays)
 	function list_append($key, $values);
 
-	// recupera todos los valores de una lista
+	// stores some value into a list at index
+	function list_store($key, $index, $value);
+
+	// gets all values from a list
 	function list_get_all($key);
 
-	// almacena una serie de valores (valor unico o array) en un conjunto
+	// stores some value(s) into a set (works with arrays)
 	function set_add($key, $values);
 
-	// retorna la cardinalidad de un conjunto
+	// gets set cardianlity
 	function set_cardinality($key);
 
-	// elimina una serie de valores (valor unico o array) en un conjunto
+	// removes some value(s) from a set
 	function set_remove($key, $values);
 
-	// recupera todos los valores de un conjunto
+	// gets all values from a set
 	function set_get_all($key);
 
-	// comprueba si un conjunto contiene un valor
-	function set_contains($key, $value);
+	// checks if a set contains some value(s) (work with arrays)
+	function set_contains($key, $values);
 
-	// recupera la diferencia entre conjuntos
+	// gets diffrecence between sets
 	function set_get_diff($keys);
 
-	// almacena la diferencia entre conjuntos
+	// stores difference between sets into a key
 	function set_store_diff($key, $keys);
+
+	// stores some value(s) into a sorted set with their scores (works with arrays)
+	function sorted_set_add($key, $scores, $values);
+
+	// gets all values from a sorted set
+	function sorted_set_get_all($key);
+
 }
