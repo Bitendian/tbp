@@ -25,7 +25,6 @@ abstract class abstract_mysql_domain {
 		$to_object = function($array) {
 			return (object)$array;
 		};
-
 		return array_map($to_object, $results);
 	}
 
