@@ -1,0 +1,33 @@
+{
+    "name": "bitendian/tbp",
+    "type": "library",
+    "description": "Light framed PHP library",
+    "keywords": ["tbo", "mysql", "postgres", "redis", "memcached", "component", "widget"],
+    "homepage": "http://www.bitendian.com/en/portfolio/tbp-5/",
+    "license": "MIT",
+    },
+    "authors": [
+        {
+            "name": "Bitendian S.L.",
+            "email": "info@bitendian.com",
+            "homepage": "http://www.bitendian.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
+    "suggest": {
+        "predis": "Redis connection implementation"
+    },
+    "autoload": {
+        "psr-4": {"Bitendian\\TBP\\": "src/"}
+    },
+    "extra": {
+        "branch-alias": {
+            "0.9-rc": "composer"
+        }
+    }
+}
