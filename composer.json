@@ -5,7 +5,6 @@
     "keywords": ["tbo", "mysql", "postgres", "redis", "memcached", "component", "widget"],
     "homepage": "http://www.bitendian.com/en/portfolio/tbp-5/",
     "license": "MIT",
-    },
     "authors": [
         {
             "name": "Bitendian S.L.",
