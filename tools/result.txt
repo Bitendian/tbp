@@ -1,0 +1,14 @@
+
+FILE: ...var/www/tbp/src/Domain/Connection/Cache/RedisCacheConnection.php
+----------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+----------------------------------------------------------------------
+ 1 | WARNING | A file should declare new symbols (classes, functions,
+   |         | constants, etc.) and cause no other side effects, or
+   |         | it should execute logic with side effects, but should
+   |         | not do both. The first symbol is defined on line 26
+   |         | and the first side effect is on line 162.
+----------------------------------------------------------------------
+
+Time: 258ms; Memory: 7.75Mb
+
