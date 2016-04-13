@@ -36,7 +36,7 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
 
     private function createConnectionFromConfig()
     {
-        return new mysqli(
+        return new \mysqli(
             $this->config->server,
             $this->config->username,
             $this->config->passwd,
@@ -46,7 +46,7 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
 
     public function open()
     {
-        if (!($this->connection = $this->createConnectionFromConfig()) {
+        if (!($this->connection = $this->createConnectionFromConfig())) {
             throw new TBPException($this->connection->connect_error(), $this->connection->connect_errno());
         }
 

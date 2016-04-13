@@ -11,7 +11,7 @@
 
 namespace Bitendian\TBP\UI;
 
-use Bitendian\TBP\UI\Interfaces\FetchInterface as FetchInterface
+use Bitendian\TBP\UI\Interfaces\FetchInterface as FetchInterface;
 use Bitendian\TBP\UI\AbstractRenderizable as AbstractRenderizable;
 
 /*
@@ -37,7 +37,7 @@ abstract class AbstractWidget extends AbstractRenderizable implements FetchInter
 
     public function __construct()
     {
-        $class = new ReflectionClass(get_class($this));
+        $class = new \ReflectionClass(get_class($this));
         $this->local_path = dirname($class->getFileName());
     }
 

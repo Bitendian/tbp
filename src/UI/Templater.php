@@ -96,7 +96,7 @@ class Templater extends AbstractRenderizable
 
     protected function replaceGettext()
     {
-        while (preg_match($this->get_gettext_regexp(), $this->result, $groups) > 0) {
+        while (preg_match($this->getGettextRegexp(), $this->result, $groups) > 0) {
             $key = $groups[1];
             $value = gettext($key);
             $this->result = str_replace($groups[0], $value, $this->result);
@@ -157,7 +157,7 @@ class Templater extends AbstractRenderizable
 
     protected function replaceTags()
     {
-        while (preg_match($this->get_tags_regexp(), $this->result, $groups) > 0) {
+        while (preg_match($this->getTagsRegexp(), $this->result, $groups) > 0) {
             $property = strtolower($groups[1]);
             $value = null;
             foreach ($this->context as &$context) {
@@ -172,7 +172,7 @@ class Templater extends AbstractRenderizable
 
     protected function replaceArrayTags()
     {
-        while (preg_match($this->get_array_tags_regexp(), $this->result, $groups) > 0) {
+        while (preg_match($this->getArrayTagsRegexp(), $this->result, $groups) > 0) {
             $property = strtolower($groups[1]);
             $value = array();
             foreach ($this->context as $context) {

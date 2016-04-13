@@ -9,7 +9,7 @@
  * code.
  */
 
-namespace Bitendian\TBP\Util;
+namespace Bitendian\TBP\Utils;
 
 /*
  * Class to manage and centralize messages to be sended to user. Messages are classified into:
@@ -68,6 +68,21 @@ class SystemMessages
     public static function addInfo($message, $id = '')
     {
         self::$infos[microtime(true)] = array($message, $id);
+    }
+
+    public static function getErrors()
+    {
+        return self::$errors;
+    }
+
+    public static function getWarnings()
+    {
+        return self::$warnings;
+    }
+
+    public static function getInfos()
+    {
+        return self::$infos;
     }
 
     public static function save(&$array = null)

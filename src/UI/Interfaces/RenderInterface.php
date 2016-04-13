@@ -9,7 +9,7 @@
  * code.
  */
 
-namespace Bitendian\TBP\UI\Interfaces
+namespace Bitendian\TBP\UI\Interfaces;
 
 /*
  * Interface to be implemented by modules that needs to render views.

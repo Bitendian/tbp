@@ -28,11 +28,6 @@ abstract class AbstractRenderizable implements RenderInterface
 {
     private $rendered_html = null;
 
-    public function runRender()
-    {
-        return $this->__toString();
-    }
-
     public function __toString()
     {
         if ($this->rendered_html === null) {

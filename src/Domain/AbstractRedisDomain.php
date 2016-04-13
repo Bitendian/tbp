@@ -15,7 +15,7 @@ use Bitendian\TBP\Domain\Connection\Cache\RedisCacheConnection as RedisCacheConn
 
 abstract class AsbtractRedisDomain
 {
-    private $connection;
+    protected $connection;
 
     public function __construct($config)
     {
