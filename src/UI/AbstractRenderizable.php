@@ -31,15 +31,7 @@ abstract class AbstractRenderizable implements RenderInterface
     public function __toString()
     {
         if ($this->rendered_html === null) {
-            try {
-                if (ob_start()) {
-                    $this->render();
-                    $this->rendered_html = ob_get_contents();
-                    ob_end_clean();
-                }
-            } catch (Exception $e) {
-                throw new TBPException("Exception found while rendering", -1, $e);
-            }
+            $this->rendered_html = $this->render();
         }
 
         return $this->rendered_html;
