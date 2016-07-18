@@ -18,8 +18,18 @@ class redis_cache_connection implements i_cache_connection {
 	}
 
 	public function open() {
-		if (!$this->connection)
-			$this->connection = new predis_client(array("scheme" => $this->config->scheme, "host" => $this->config->host, "port" => $this->config->port, "database" => $this->config->database));
+		if (!$this->connection) {
+			$connection_parameters = array();
+			$connection_parameters['scheme'] = $this->config->scheme;
+			$connection_parameters['host'] = $this->config->host;
+			$connection_parameters['port'] = $this->config->port;
+			$connection_parameters['database'] = $this->config->database;
+			if (isset($this->config->timeout)) {
+				$connection_parameters['timeout'] = $this->config->timeout;
+			}
+
+			$this->connection = new predis_client($connection_parameters);
+		}
 	}
 
 	public function close() {
