@@ -119,6 +119,10 @@ class redis_cache_connection implements i_cache_connection {
 		return $this->connection->zrange($key, 0, -1, array('WITHSCORES' => $with_scores));
 	}
 
+	function info() {
+		return $this->connection->info();
+	}
+
 }
 
 predis_autoloader::register();
