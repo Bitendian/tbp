@@ -68,4 +68,12 @@ interface i_cache_connection {
 	// gets all values from a sorted set
 	function sorted_set_get_all($key);
 
+	// stores some pairs key => values into a hash
+	function hash_add($key, $data);
+
+	// get a value from a given key in a hash
+	function hash_get($key, $field);
+
+	// get all key value pairs from hash
+	function hash_get_all($key);
 }

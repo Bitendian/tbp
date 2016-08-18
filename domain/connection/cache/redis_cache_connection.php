@@ -123,6 +123,17 @@ class redis_cache_connection implements i_cache_connection {
 		return $this->connection->info();
 	}
 
+	function hash_add($key, $data) {
+		$this->connection->hmset($key, $data);
+	}
+	
+	function hash_get($key, $field) {
+		return $this->connection->hget($key, $field);
+	}
+	
+	function hash_get_all($key) {
+		return $this->connection->hgetall($key);
+	}
 }
 
 predis_autoloader::register();
