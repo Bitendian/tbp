@@ -79,6 +79,7 @@ class mysql_database_connection implements i_database_connection {
 		$key_field = null;
 		$fields = array();
 		$meta = $statement->result_metadata();
+
 		while ($field = $meta->fetch_field()) {
 			if (($field->flags & 512) > 0)
 				$key_field = $field->name;
@@ -91,10 +92,22 @@ class mysql_database_connection implements i_database_connection {
 		while ($statement->fetch()) {
 			foreach($row as $key => $value)
 				$row_assoc[$key] = $value;
-			if ($key_field != null)
-				$result[$row_assoc[$key_field]] = $row_assoc;
-			else
+
+			// we try to index results by key_field (an autonumeric field)
+			if ($key_field != null) {
+				if (isset($result[$row_assoc[$key_field]])) {
+					// is impossible to index by key_field, first we convert associtive to indexed array
+					$result = array_values($result);
+					// no more key_field, is not really a key
+					$key_field = null;
+					// pushing to new indexed array
+					$result[] = $row_assoc;
+				} else {
+					$result[$row_assoc[$key_field]] = $row_assoc;
+				}
+			} else {
 				$result[] = $row_assoc;
+			}
 		}
 
 		$statement->close();
