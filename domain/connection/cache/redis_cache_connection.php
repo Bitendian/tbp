@@ -49,7 +49,7 @@ class redis_cache_connection implements i_cache_connection {
 	}
 
 	public function clear() {
-		return $this->connection->flushall();
+		return $this->connection->flushdb();
 	}
 
 	public function store($key, $value) {
