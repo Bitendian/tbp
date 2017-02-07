@@ -11,7 +11,6 @@
 
 namespace Bitendian\TBP;
 
-use Predis\Autoloader as Autoloader;
 use Predis\Client as Client;
 
 use Bitendian\TBP\Utils\Config as Config;
@@ -158,5 +157,3 @@ class RedisCacheConnection implements CacheConnectionInterface
         return $this->connection->zrange($key, 0, -1, array('WITHSCORES' => $with_scores));
     }
 }
-
-Autoloader::register();

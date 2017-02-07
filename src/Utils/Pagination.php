@@ -9,7 +9,7 @@
  * code.
  */
 
-namespace Bitendian\TBP\Util;
+namespace Bitendian\TBP\Utils;
 
 /*
  * Class to manage pagination info in all kind of access to domains.
