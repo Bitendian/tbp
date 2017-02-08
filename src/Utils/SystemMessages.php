@@ -57,17 +57,17 @@ class SystemMessages
 
     public static function addError($message, $id = '')
     {
-        self::$errors[microtime(true)] = array($message, $id);
+        self::$errors[count(self::$errors) + count(self::$warnings) + count(self::$infos)] = array($message, $id);
     }
 
     public static function addWarning($message, $id = '')
     {
-        self::$warnings[microtime(true)] = array($message, $id);
+        self::$warnings[count(self::$errors) + count(self::$warnings) + count(self::$infos)] = array($message, $id);
     }
 
     public static function addInfo($message, $id = '')
     {
-        self::$infos[microtime(true)] = array($message, $id);
+        self::$infos[count(self::$errors) + count(self::$warnings) + count(self::$infos)] = array($message, $id);
     }
 
     public static function getErrors()
