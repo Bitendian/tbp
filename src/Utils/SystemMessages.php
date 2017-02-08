@@ -24,7 +24,7 @@ namespace Bitendian\TBP\Utils;
  *
  * Messages can be given with a custom id to be identified if needed.
  *
- * SystemMessages provides methods to be saved and restored in order to be shared between executions if needed. If 
+ * SystemMessages provides methods to be saved and restored in order to be shared between executions if needed. If
  * proper array is provided then that array is used. If no array is provided storing and retrieving relays on SESSION.
  * Once restored, messages are removed from array.
  */
@@ -57,17 +57,17 @@ class SystemMessages
 
     public static function addError($message, $id = '')
     {
-        self::$errors[microtime(true)] = array($message, $id);
+        self::$errors[count(self::$errors) + count(self::$warnings) + count(self::$infos)] = array($message, $id);
     }
 
     public static function addWarning($message, $id = '')
     {
-        self::$warnings[microtime(true)] = array($message, $id);
+        self::$warnings[count(self::$errors) + count(self::$warnings) + count(self::$infos)] = array($message, $id);
     }
 
     public static function addInfo($message, $id = '')
     {
-        self::$infos[microtime(true)] = array($message, $id);
+        self::$infos[count(self::$errors) + count(self::$warnings) + count(self::$infos)] = array($message, $id);
     }
 
     public static function getErrors()
