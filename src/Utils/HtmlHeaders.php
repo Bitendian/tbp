@@ -45,12 +45,12 @@ class HtmlHeaders
 
     public static function addScript($script)
     {
-        self::$scripts[microtime(true)] = $script;
+        self::$scripts[count(self::$scripts) + count(self::$styleSheets)] = $script;
     }
 
     public static function addStyleSheet($styleSheet)
     {
-        self::$styleSheets[microtime(true)] = $styleSheet;
+        self::$styleSheets[count(self::$scripts) + count(self::$styleSheets)] = $styleSheet;
     }
 
     public static function getTitle()
