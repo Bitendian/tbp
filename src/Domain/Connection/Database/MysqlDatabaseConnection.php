@@ -39,7 +39,7 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
         return new \mysqli(
             $this->config->server,
             $this->config->username,
-            $this->config->passwd,
+            $this->config->password,
             $this->config->database
         );
     }
