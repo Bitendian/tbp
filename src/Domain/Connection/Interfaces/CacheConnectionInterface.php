@@ -94,4 +94,7 @@ interface CacheConnectionInterface
 
     // get all key value pairs from hash
     public function hash_get_all($key);
+
+    // get database information
+    public function info();
 }

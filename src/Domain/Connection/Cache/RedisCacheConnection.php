@@ -169,4 +169,8 @@ class RedisCacheConnection implements CacheConnectionInterface
         return $this->connection->hgetall($key);
     }
 
+    public function info() {
+        return $this->connection->info();
+    }
+
 }
