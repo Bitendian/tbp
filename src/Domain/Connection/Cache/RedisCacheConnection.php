@@ -34,11 +34,17 @@ class RedisCacheConnection implements CacheConnectionInterface
 
     private function createConnectionFromConfig()
     {
-        return new Client(array(
-            "scheme" => $this->config->scheme,
-            "host" => $this->config->host,
-            "port" => $this->config->port,
-            "database" => $this->config->database));
+        $connection_parameters = array();
+        $connection_parameters['scheme'] = $this->config->scheme;
+        $connection_parameters['host'] = $this->config->host;
+        $connection_parameters['port'] = $this->config->port;
+        $connection_parameters['database'] = $this->config->database;
+
+        if (isset($this->config->read_write_timeout)) {
+            $connection_parameters['read_write_timeout'] = $this->config->read_write_timeout;
+        }
+
+        return new Client($connection_parameters);
     }
 
     public function open()
