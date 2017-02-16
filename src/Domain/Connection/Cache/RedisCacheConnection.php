@@ -156,4 +156,17 @@ class RedisCacheConnection implements CacheConnectionInterface
     {
         return $this->connection->zrange($key, 0, -1, array('WITHSCORES' => $with_scores));
     }
+
+    public function hash_add($key, $data) {
+        $this->connection->hmset($key, $data);
+    }
+
+    public function hash_get($key, $field) {
+        return $this->connection->hget($key, $field);
+    }
+
+    public function hash_get_all($key) {
+        return $this->connection->hgetall($key);
+    }
+
 }
