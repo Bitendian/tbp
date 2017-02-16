@@ -70,7 +70,7 @@ class RedisCacheConnection implements CacheConnectionInterface
 
     public function clear()
     {
-        return $this->connection->flushall();
+        return $this->connection->flushdb();
     }
 
     public function store($key, $value)
