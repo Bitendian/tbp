@@ -38,7 +38,7 @@ use Bitendian\TBP\UI\AbstractWidget as AbstractWidget;
 
 abstract class AbstractComponent extends AbstractWidget implements ActionInterface
 {
-    private $action;
+    public $action;
 
     public function __construct()
     {
