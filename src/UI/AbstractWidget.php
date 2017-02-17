@@ -40,9 +40,4 @@ abstract class AbstractWidget extends AbstractRenderizable implements FetchInter
         $class = new \ReflectionClass(get_class($this));
         $this->local_path = dirname($class->getFileName());
     }
-
-    public function runFetch(&$params)
-    {
-        $this->fetch($params);
-    }
 }

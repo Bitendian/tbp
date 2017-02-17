@@ -5,7 +5,7 @@
  *
  * (c) Bitendian <info@bitendian.com>
  *
- * For the full copyright and license information, please view the LICENSE file that was distributed with this source 
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source
  * code.
  */
 
@@ -20,7 +20,6 @@ namespace Bitendian\TBP\UI\Interfaces;
  * Main methods are:
  *
  * - render
- * - renderJS
  *
  * Render must be called after optional action stage and mandatory fetch stage. Typical render responsability is:
  *
@@ -31,5 +30,4 @@ namespace Bitendian\TBP\UI\Interfaces;
 interface RenderInterface
 {
     public function render();
-    public function renderJS();
 }

@@ -72,19 +72,6 @@ class Templater extends AbstractRenderizable
         return $this->result;
     }
 
-    public function renderJS()
-    {
-        $this->result = $this->loadContent();
-        $context = $this->context;
-        if (!is_array($context)) {
-            $this->context = array();
-            $this->context[] = $context;
-        }
-        $this->replace();
-
-        return $this->result;
-    }
-
     private function loadContent()
     {
         if ($this->source === null) {
