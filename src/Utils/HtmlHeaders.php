@@ -23,6 +23,24 @@ class HtmlHeaders
     protected static $scripts = array();
     protected static $styleSheets = array();
 
+    private static function containsScript($script) {
+        for (self::$scripts as $k => $v) {
+            if ($v == $script) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static function containsStyleSheet($styleSheet) {
+        for (self::$styleSheets as $k => $v) {
+            if ($v == $styleSheet) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function hasTitle()
     {
         return self::$title != null;
@@ -45,12 +63,16 @@ class HtmlHeaders
 
     public static function addScript($script)
     {
-        self::$scripts[count(self::$scripts) + count(self::$styleSheets)] = $script;
+        if (!self::containsScript($script) {
+            self::$scripts[count(self::$scripts) + count(self::$styleSheets)] = $script;
+        }
     }
 
     public static function addStyleSheet($styleSheet)
     {
-        self::$styleSheets[count(self::$scripts) + count(self::$styleSheets)] = $styleSheet;
+        if (!self::containsStyleSheet($styleSheet) {
+            self::$styleSheets[count(self::$scripts) + count(self::$styleSheets)] = $styleSheet;
+        }
     }
 
     public static function getTitle()
