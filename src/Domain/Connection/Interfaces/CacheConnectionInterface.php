@@ -85,4 +85,16 @@ interface CacheConnectionInterface
 
     // gets all values from a sorted set
     public function sortedSetGetAll($key);
+
+    // stores some pairs key => values into a hash
+    public function hashAdd($key, $data);
+
+    // get a value from a given key in a hash
+    public function hashGet($key, $field);
+
+    // get all key value pairs from hash
+    public function hashGetAll($key);
+
+    // get database information
+    public function info();
 }

@@ -39,7 +39,7 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
         return new \mysqli(
             $this->config->server,
             $this->config->username,
-            $this->config->passwd,
+            $this->config->password,
             $this->config->database
         );
     }
@@ -131,7 +131,16 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
             }
 
             if ($key_field != null) {
-                $result[$row_assoc[$key_field]] = $row_assoc;
+                if (isset($result[$row_assoc[$key_field]])) {
+                    // is impossible to index by key_field, first we convert associtive to indexed array
+                    $result = array_values($result);
+                    // no more key_field, is not really a key
+                    $key_field = null;
+                    // pushing to new indexed array
+                    $result[] = $row_assoc;
+                } else {
+                    $result[$row_assoc[$key_field]] = $row_assoc;
+                }
             } else {
                 $result[] = $row_assoc;
             }

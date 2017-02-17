@@ -34,11 +34,17 @@ class RedisCacheConnection implements CacheConnectionInterface
 
     private function createConnectionFromConfig()
     {
-        return new Client(array(
-            "scheme" => $this->config->scheme,
-            "host" => $this->config->host,
-            "port" => $this->config->port,
-            "database" => $this->config->database));
+        $connection_parameters = array();
+        $connection_parameters['scheme'] = $this->config->scheme;
+        $connection_parameters['host'] = $this->config->host;
+        $connection_parameters['port'] = $this->config->port;
+        $connection_parameters['database'] = $this->config->database;
+
+        if (isset($this->config->read_write_timeout)) {
+            $connection_parameters['read_write_timeout'] = $this->config->read_write_timeout;
+        }
+
+        return new Client($connection_parameters);
     }
 
     public function open()
@@ -70,7 +76,7 @@ class RedisCacheConnection implements CacheConnectionInterface
 
     public function clear()
     {
-        return $this->connection->flushall();
+        return $this->connection->flushdb();
     }
 
     public function store($key, $value)
@@ -155,5 +161,25 @@ class RedisCacheConnection implements CacheConnectionInterface
     public function sortedSetGetAll($key, $with_scores = false)
     {
         return $this->connection->zrange($key, 0, -1, array('WITHSCORES' => $with_scores));
+    }
+
+    public function hashAdd($key, $data)
+    {
+        $this->connection->hmset($key, $data);
+    }
+
+    public function hashGet($key, $field)
+    {
+        return $this->connection->hget($key, $field);
+    }
+
+    public function hashGetAll($key)
+    {
+        return $this->connection->hgetall($key);
+    }
+
+    public function info()
+    {
+        return $this->connection->info();
     }
 }
