@@ -24,7 +24,7 @@ class HtmlHeaders
     protected static $styleSheets = array();
 
     private static function containsScript($script) {
-        for (self::$scripts as $k => $v) {
+        foreach (self::$scripts as $k => $v) {
             if ($v == $script) {
                 return true;
             }
@@ -33,7 +33,7 @@ class HtmlHeaders
     }
 
     private static function containsStyleSheet($styleSheet) {
-        for (self::$styleSheets as $k => $v) {
+        foreach (self::$styleSheets as $k => $v) {
             if ($v == $styleSheet) {
                 return true;
             }
@@ -63,14 +63,14 @@ class HtmlHeaders
 
     public static function addScript($script)
     {
-        if (!self::containsScript($script) {
+        if (!self::containsScript($script)) {
             self::$scripts[count(self::$scripts) + count(self::$styleSheets)] = $script;
         }
     }
 
     public static function addStyleSheet($styleSheet)
     {
-        if (!self::containsStyleSheet($styleSheet) {
+        if (!self::containsStyleSheet($styleSheet)) {
             self::$styleSheets[count(self::$scripts) + count(self::$styleSheets)] = $styleSheet;
         }
     }
