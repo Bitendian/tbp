@@ -88,7 +88,7 @@ class SystemMessages
     public static function save(&$array = null)
     {
         if ($array === null) {
-            $array = $_SESSION;
+            $array = &$_SESSION;
         }
 
         $array['messages_infos'] = serialize(self::$infos);
@@ -99,19 +99,19 @@ class SystemMessages
     public static function restore(&$array = null)
     {
         if ($array === null) {
-            $array = $_SESSION;
+            $array = &$_SESSION;
         }
 
         if (isset($array['messages_infos'])) {
-            self::$infos = unserialize($_SESSION['messages_infos']);
+            self::$infos = unserialize($array['messages_infos']);
             unset($array['messages_infos']);
         }
         if (isset($array['messages_warnings'])) {
-            self::$warnings = unserialize($_SESSION['messages_warnings']);
+            self::$warnings = unserialize($array['messages_warnings']);
             unset($array['messages_warnings']);
         }
         if (isset($array['messages_errors'])) {
-            self::$errors = unserialize($_SESSION['messages_errors']);
+            self::$errors = unserialize($array['messages_errors']);
             unset($array['messages_errors']);
         }
     }
