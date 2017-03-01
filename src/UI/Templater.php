@@ -196,7 +196,7 @@ class Templater extends AbstractRenderizable
         return '/' . self::GETTEXT_SEPARATOR . '(.+?)' . self::GETTEXT_SEPARATOR . '/';
     }
 
-    private function getTags()
+    public function getTags()
     {
         $content = $this->load_content();
         $tags = array();
