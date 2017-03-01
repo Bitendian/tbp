@@ -46,7 +46,7 @@ abstract class AbstractComponent extends AbstractWidget implements ActionInterfa
         $this->action = self::actionEncode(get_class($this));
     }
 
-    protected static function actionEncode($action)
+    public static function actionEncode($action)
     {
         return urlencode(base64_encode($action));
     }
