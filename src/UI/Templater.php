@@ -202,13 +202,13 @@ class Templater extends AbstractRenderizable
         $tags = array();
 
         // remove array tags (dirty style)
-        while (preg_match($this->get_array_tags_regexp(), $content, $groups) > 0) {
+        while (preg_match($this->getArrayTagsRegexp(), $content, $groups) > 0) {
             $tags []= strtolower($groups[1]);
             $content = str_replace($groups[0], '', $content);
         }
 
         // pull tags
-        while (preg_match($this->get_tags_regexp(), $content, $groups) > 0) {
+        while (preg_match($this->getTagsRegexp(), $content, $groups) > 0) {
             $tags []= strtolower($groups[1]);
             $content = str_replace($groups[0], '', $content);
         }
