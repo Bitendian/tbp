@@ -50,7 +50,7 @@ abstract class AbstractDatabaseDomain
     protected function insertOnTableWithAutoincrementId($sql, &$params)
     {
         if ($this->connection->command($sql, $params)) {
-            return $this->connection->last_insert_id();
+            return $this->connection->lastInsertId();
         }
         return false;
     }
