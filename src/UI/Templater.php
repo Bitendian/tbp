@@ -198,7 +198,7 @@ class Templater extends AbstractRenderizable
 
     public function getTags()
     {
-        $content = $this->load_content();
+        $content = $this->loadContent();
         $tags = array();
 
         // remove array tags (dirty style)
