@@ -32,10 +32,10 @@ abstract class AbstractRenderizable implements RenderInterface
     {
         if ($this->rendered_html === null) {
             try {
-		if (ob_start()) {
+		if (\ob_start()) {
 	            $this->render();
-	            $this->_rendered_html = ob_get_contents();
-                    ob_end_clean();
+	            $this->rendered_html = ob_get_contents();
+                    \ob_end_clean();
                 }
             } catch(Exception $e) {
                 // TODO add log for exception
