@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Bitendian\TBP;
+namespace Bitendian\TBP\Domain\Connection\Cache;
 
 use Predis\Client as Client;
 
-use Bitendian\TBP\Utils\Config as Config;
 use Bitendian\TBP\Domain\Connection\Interfaces\CacheConnectionInterface as CacheConnectionInterface;
 
 /*
@@ -50,7 +49,7 @@ class RedisCacheConnection implements CacheConnectionInterface
     public function open()
     {
         if (!$this->connection) {
-            $this->connection = $this->createConnectionFromConfig());
+            $this->connection = $this->createConnectionFromConfig();
         }
     }
 
