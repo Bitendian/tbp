@@ -37,7 +37,7 @@ abstract class AbstractRenderizable implements RenderInterface
                     $this->rendered_html = \ob_get_contents();
                     \ob_end_clean();
                 }
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 // TODO add log for exception
             }
         }
