@@ -55,9 +55,4 @@ abstract class AbstractComponent extends AbstractWidget implements ActionInterfa
     {
         return base64_decode(urldecode($action));
     }
-
-    public function runAction(&$params)
-    {
-        $this->action($params);
-    }
 }
