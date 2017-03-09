@@ -47,7 +47,8 @@ abstract class AbstractDatabaseDomain
         return array_map($to_object, $results);
     }
     
-    protected function insertWithAutoincrement($sql, &$params)
+    // helper function: insert a row into given table and returns last inserted autoincrement id (or false)
+    protected function insertWithAutoincrement($sql, $params = array())
     {
         if ($this->connection->command($sql, $params)) {
             return $this->connection->lastInsertId();
