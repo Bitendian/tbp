@@ -11,8 +11,6 @@
 
 namespace Bitendian\TBP\UI;
 
-use Bitendian\TBP\UI\AbstractRenderizable as AbstractRenderizable;
-
 /*
  * Class to templatize.
  *
@@ -43,7 +41,6 @@ class Templater extends AbstractRenderizable
     private $source;
     private $context;
     private $result;
-    private $replaced_array_tags = array();
 
     const SEPARATOR = '@@';
     const ARRAY_SEPARATOR = '@@@';
@@ -83,23 +80,23 @@ class Templater extends AbstractRenderizable
 
     protected function replace()
     {
+        $this->replaceGettext();
         if ($this->context !== null) {
             $this->replaceArrayTags();
             $this->replaceTags();
         }
-        $this->replaceGettext();
     }
 
     protected function replaceGettext()
     {
-        while (preg_match($this->getGettextRegexp(), $this->result, $groups) > 0) {
+        while (preg_match(self::getGettextRegexp(), $this->result, $groups) > 0) {
             $key = $groups[1];
             $value = gettext($key);
             $this->result = str_replace($groups[0], $value, $this->result);
         }
     }
 
-    private function rReplaceProperty($context, $property, &$value)
+    private static function rReplaceProperty($context, $property, &$value)
     {
         // get context properties in lowercase
         if (isset($context) && is_object($context)) {
@@ -116,7 +113,7 @@ class Templater extends AbstractRenderizable
             $property2 = substr($property, $p + 1);
             // if exists property1 as context var $property1 is context and property2 is property
             if (array_key_exists($property1, $context_vars)) {
-                return $this->rReplaceProperty($context_vars[$property1], $property2, $value);
+                return self::rReplaceProperty($context_vars[$property1], $property2, $value);
             }
         } elseif (array_key_exists($property, $context_vars)) {
             // is context property
@@ -153,11 +150,11 @@ class Templater extends AbstractRenderizable
 
     protected function replaceTags()
     {
-        while (preg_match($this->getTagsRegexp(), $this->result, $groups) > 0) {
+        while (preg_match(self::getTagsRegexp(), $this->result, $groups) > 0) {
             $property = strtolower($groups[1]);
             $value = null;
             foreach ($this->context as &$context) {
-                if ($this->rReplaceProperty($context, $property, $value)) {
+                if (self::rReplaceProperty($context, $property, $value)) {
                     break;
                 }
             }
@@ -168,11 +165,11 @@ class Templater extends AbstractRenderizable
 
     protected function replaceArrayTags()
     {
-        while (preg_match($this->getArrayTagsRegexp(), $this->result, $groups) > 0) {
+        while (preg_match(self::getArrayTagsRegexp(), $this->result, $groups) > 0) {
             $property = strtolower($groups[1]);
             $value = array();
             foreach ($this->context as $context) {
-                if ($this->rReplaceProperty($context, $property, $value, true)) {
+                if (self::rReplaceProperty($context, $property, $value, true)) {
                     break;
                 }
             }
@@ -181,17 +178,17 @@ class Templater extends AbstractRenderizable
         }
     }
 
-    private function getArrayTagsRegexp()
+    private static function getArrayTagsRegexp()
     {
         return '/' . self::ARRAY_SEPARATOR . '(.+?)' . self::ARRAY_SEPARATOR . '/';
     }
 
-    private function getTagsRegexp()
+    private static function getTagsRegexp()
     {
         return '/' . self::SEPARATOR . '(.+?)' . self::SEPARATOR . '/';
     }
 
-    private function getGettextRegexp()
+    private static function getGettextRegexp()
     {
         return '/' . self::GETTEXT_SEPARATOR . '(.+?)' . self::GETTEXT_SEPARATOR . '/';
     }
@@ -202,17 +199,48 @@ class Templater extends AbstractRenderizable
         $tags = array();
 
         // remove array tags (dirty style)
-        while (preg_match($this->getArrayTagsRegexp(), $content, $groups) > 0) {
+        while (preg_match(self::getArrayTagsRegexp(), $content, $groups) > 0) {
             $tags []= strtolower($groups[1]);
             $content = str_replace($groups[0], '', $content);
         }
 
         // pull tags
-        while (preg_match($this->getTagsRegexp(), $content, $groups) > 0) {
+        while (preg_match(self::getTagsRegexp(), $content, $groups) > 0) {
             $tags []= strtolower($groups[1]);
             $content = str_replace($groups[0], '', $content);
         }
 
         return $tags;
+    }
+
+    public function getGettextTags()
+    {
+        $content = $this->loadContent();
+        $tags = array();
+
+        // pull tags
+        while (preg_match($this->getGettextRegexp(), $content, $groups) > 0) {
+            $tags []= $groups[1];
+            $content = str_replace($groups[0], '', $content);
+        }
+
+        return $tags;
+    }
+
+    public static function url($string, $context = null)
+    {
+        if ($context == null) return $string;
+
+        while (preg_match(self::getTagsRegexp(), $string, $groups) > 0) {
+            $property = strtolower($groups[1]);
+            $value = null;
+            if (static::rReplaceProperty($context, $property, $value)) {
+                break;
+            }
+
+            $string = str_replace($groups[0], $value, $string);
+        }
+
+        return $string;
     }
 }
