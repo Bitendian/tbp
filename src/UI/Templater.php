@@ -229,7 +229,9 @@ class Templater extends AbstractRenderizable
 
     public static function url($string, $context = null)
     {
-        if ($context == null) return $string;
+        if ($context == null) {
+            return $string;
+        }
 
         while (preg_match(self::getTagsRegexp(), $string, $groups) > 0) {
             $property = strtolower($groups[1]);
