@@ -125,8 +125,8 @@ abstract class AbstractAPIRest
     abstract protected function get();
 
     abstract protected function put();
-                      
+
     abstract protected function delete();
-                      
+
     abstract protected function post();
 }
