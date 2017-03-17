@@ -45,8 +45,6 @@ class Templater extends AbstractRenderizable
     const SEPARATOR = '@@';
     const ARRAY_SEPARATOR = '@@@';
     const GETTEXT_SEPARATOR = '##';
-    const URL_OPEN_SEPARATOR = '{';
-    const URL_CLOSE_SEPARATOR = '}';
 
     public function __construct($source, $context = null)
     {
@@ -195,11 +193,6 @@ class Templater extends AbstractRenderizable
         return '/' . self::GETTEXT_SEPARATOR . '(.+?)' . self::GETTEXT_SEPARATOR . '/';
     }
 
-    public static function getWildCardRegexp()
-    {
-        return '/' . self::URL_OPEN_SEPARATOR . '(.+?)' . self::URL_CLOSE_SEPARATOR . '/';
-    }
-
     public function getTags()
     {
         $content = $this->loadContent();
@@ -240,7 +233,7 @@ class Templater extends AbstractRenderizable
             return $string;
         }
 
-        while (preg_match(self::getWildCardRegexp(), $string, $groups) > 0) {
+        while (preg_match(self::getTagsRegexp(), $string, $groups) > 0) {
             $property = strtolower($groups[1]);
             $value = null;
             if (static::rReplaceProperty($context, $property, $value)) {
