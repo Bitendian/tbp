@@ -42,7 +42,6 @@ abstract class AbstractComponent extends AbstractWidget implements ActionInterfa
 
     public function __construct()
     {
-        parent::__construct();
         $this->action = self::actionEncode(get_class($this));
     }
 
