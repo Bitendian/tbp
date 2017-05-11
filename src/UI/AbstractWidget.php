@@ -33,11 +33,4 @@ use Bitendian\TBP\UI\AbstractRenderizable as AbstractRenderizable;
 
 abstract class AbstractWidget extends AbstractRenderizable implements FetchInterface
 {
-    protected $local_path = '';
-
-    public function __construct()
-    {
-        $class = new \ReflectionClass(get_class($this));
-        $this->local_path = dirname($class->getFileName());
-    }
 }
