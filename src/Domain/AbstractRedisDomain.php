@@ -13,7 +13,7 @@ namespace Bitendian\TBP\Domain;
 
 use Bitendian\TBP\Domain\Connection\Cache\RedisCacheConnection as RedisCacheConnection;
 
-abstract class AsbtractRedisDomain
+abstract class AbstractRedisDomain
 {
     protected $connection;
 
