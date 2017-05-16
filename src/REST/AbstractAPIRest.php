@@ -64,7 +64,7 @@ abstract class AbstractAPIRest
                 $this->body = file_get_contents('php://input');
                 break;
             case 'GET':
-                $this->params = $this->clean_inputs($_GET);
+                $this->params = $this->cleanInputs($_GET);
                 break;
             default:
                 self::response('invalid method: ' . $this->method, 405);
