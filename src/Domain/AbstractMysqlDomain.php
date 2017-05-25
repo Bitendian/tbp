@@ -26,8 +26,6 @@ use Bitendian\TBP\Domain\Connection\Database\MysqlDatabaseConnection as MysqlDat
 
 abstract class AbstractMysqlDomain extends AbstractDatabaseDomain
 {
-    protected $connection;
-
     public function __construct($config)
     {
         $this->connection = new MysqlDatabaseConnection($config);
