@@ -66,7 +66,7 @@ abstract class AbstractDatabaseDomain
         $this->connection->begin();
     }
 
-    public abstract function commit()
+    public function commit()
     {
         $this->connection->commit();
     }
