@@ -58,6 +58,16 @@ abstract class AbstractDatabaseDomain
     }
 
     // it is a database domain, so transactions are expected at domain level too
+    public function open()
+    {
+        $this->connection->open();
+    }
+
+    public function close()
+    {
+        $this->connection->close();
+    }
+
     public function begin()
     {
         $this->connection->begin();
