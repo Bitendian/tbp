@@ -64,7 +64,7 @@ abstract class AbstractAPIRest
                 $this->body = file_get_contents('php://input');
                 break;
             case 'GET':
-                $this->params = $this->clean_inputs($_GET);
+                $this->params = $this->cleanInputs($_GET);
                 break;
             default:
                 self::response('invalid method: ' . $this->method, 405);
@@ -72,7 +72,7 @@ abstract class AbstractAPIRest
         }
     }
 
-    protected static function response($data, $status = 200, $location = null)
+    public static function response($data, $status = 200, $location = null)
     {
         header('HTTP/1.1 ' . $status . ' ' . self::$request_status[$status]);
 
