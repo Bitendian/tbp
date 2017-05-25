@@ -11,7 +11,6 @@
 
 namespace Bitendian\TBP\Domain;
 
-use Bitendian\TBP\Utils\Config as Config;
 use Bitendian\TBP\Domain\AbstractDatabaseDomain as AbstractDatabaseDomain;
 use Bitendian\TBP\Domain\Connection\Database\MysqlDatabaseConnection as MysqlDatabaseConnection;
 

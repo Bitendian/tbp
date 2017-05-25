@@ -11,9 +11,6 @@
 
 namespace Bitendian\TBP\Domain;
 
-use Bitendian\TBP\Utils\Config as Config;
-use Bitendian\TBP\Domain\Connection\MysqlDatabaseConnection as MysqlDatabaseConnection;
-
 /*
  * Abstract class to be extended by app classes that needs to access a database domain.
  *
