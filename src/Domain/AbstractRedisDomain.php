@@ -15,6 +15,10 @@ use Bitendian\TBP\Domain\Connection\Cache\RedisCacheConnection as RedisCacheConn
 
 abstract class AbstractRedisDomain extends AbstractCacheDomain
 {
+    /**
+     * AbstractRedisDomain constructor.
+     * @param \stdClass $config
+     */
     public function __construct($config)
     {
         $this->connection = new RedisCacheConnection($config);

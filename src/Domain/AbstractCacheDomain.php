@@ -17,7 +17,12 @@ namespace Bitendian\TBP\Domain;
  * TBP provides extensions classes for well known cache servers (redis, memcached...)
 */
 
+use Bitendian\TBP\Domain\Connection\Interfaces\CacheConnectionInterface;
+
 abstract class AbstractCacheDomain
 {
+    /**
+     * @var CacheConnectionInterface
+     */
     protected $connection;
 }

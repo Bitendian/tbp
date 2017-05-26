@@ -11,7 +11,6 @@
 
 namespace Bitendian\TBP\Domain;
 
-use Bitendian\TBP\Domain\AbstractDatabaseDomain as AbstractDatabaseDomain;
 use Bitendian\TBP\Domain\Connection\Database\MysqlDatabaseConnection as MysqlDatabaseConnection;
 
 /*
@@ -25,6 +24,10 @@ use Bitendian\TBP\Domain\Connection\Database\MysqlDatabaseConnection as MysqlDat
 
 abstract class AbstractMysqlDomain extends AbstractDatabaseDomain
 {
+    /**
+     * AbstractMysqlDomain constructor.
+     * @param \stdClass $config
+     */
     public function __construct($config)
     {
         $this->connection = new MysqlDatabaseConnection($config);

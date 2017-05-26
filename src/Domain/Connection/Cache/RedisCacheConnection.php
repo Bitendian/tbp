@@ -23,9 +23,19 @@ use Bitendian\TBP\Domain\Connection\Interfaces\CacheConnectionInterface as Cache
 
 class RedisCacheConnection implements CacheConnectionInterface
 {
+    /**
+     * @var \stdClass
+     */
     private $config;
+    /**
+     * @var Client
+     */
     private $connection;
 
+    /**
+     * RedisCacheConnection constructor.
+     * @param \stdClass $config
+     */
     public function __construct($config)
     {
         $this->config = $config;
@@ -105,8 +115,8 @@ class RedisCacheConnection implements CacheConnectionInterface
 
     public function listStore($key, $index, $value)
     {
-        if ((!$this->exists($key) && $index == 0) || ($index == $this->list_cardinality($key))) {
-            $this->list_append($key, $value);
+        if ((!$this->exists($key) && $index == 0) || ($index == $this->listCardinality($key))) {
+            $this->listAppend($key, $value);
         } else {
             $this->connection->lset($key, $index, $value);
         }
