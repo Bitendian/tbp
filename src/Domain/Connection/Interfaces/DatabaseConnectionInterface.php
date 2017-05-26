@@ -27,10 +27,10 @@ interface DatabaseConnectionInterface
     public function close();
 
     // returns select result
-    public function select($sql, $params);
+    public function select($sql, $params = array());
 
     // retuns command result
-    public function command($sql, $params);
+    public function command($sql, $params = array());
 
     // returns last inserted id with the connection
     public function lastInsertId($table = null, $field = null);
