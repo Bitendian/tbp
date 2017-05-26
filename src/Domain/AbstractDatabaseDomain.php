@@ -23,8 +23,13 @@ namespace Bitendian\TBP\Domain;
  * TBP provides extensions classes for well known database servers (mysql, postgresql)
 */
 
+use Bitendian\TBP\Domain\Connection\Interfaces\DatabaseConnectionInterface;
+
 abstract class AbstractDatabaseDomain
 {
+    /**
+     * @var DatabaseConnectionInterface
+     */
     protected $connection;
 
     // helper function: returns a single result (as object) or false if there are 0 or more than 1 results
