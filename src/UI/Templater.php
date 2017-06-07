@@ -21,16 +21,17 @@ namespace Bitendian\TBP\UI;
  * called 'property' on context. If value is a number in @@PROPERTY.VALUE@@ clause will make a replacement with an array
  * value on an indexed array. This construction can be nested, so @@PROP1.PROP2.PROP3.VALUE@@ is a valid clause.
  *
- * @@@VALUES@@@ will be replaced by a concatenation of all values of an array called 'values' on context. Object or
- * array constructions are valid, so @@@PROPERY.VALUES@@@ is a valid clause that means "concatenate all values of an
+ * %%VALUES%% will be replaced by a concatenation of all values of an array called 'values' on context. Object or
+ * array constructions are valid, so %%PROPERTY.VALUES%% is a valid clause that means "concatenate all values of an
  * array called 'values' on an object (or array) called PROPERTY on context". This clause can be nested too.
  *
  * ##TEXT## will be replace by result of calling gettext with TEXT as param.
  *
  * Precedence is:
  *
- * - @@ and @@@ will be replaced on first stage
- * - ## will be replaced on a second stage
+ * - ## will be replaced on first stage
+ * - %% will be replaced on second stage
+ * - @@ will be replaced on third stage
  *
  * ##@@VALUE@@## is a valid clause, with Templater precedence that means "first replace with the value on context and
  * then make a translation of this replacement". This is valid for ##@@PROPERTY.VALUE@@## as well.
@@ -43,7 +44,7 @@ class Templater extends AbstractRenderizable
     private $result;
 
     const SEPARATOR = '@@';
-    const ARRAY_SEPARATOR = '@@@';
+    const ARRAY_SEPARATOR = '%%';
     const GETTEXT_SEPARATOR = '##';
 
     public function __construct($source, $context = null)
@@ -225,24 +226,5 @@ class Templater extends AbstractRenderizable
         }
 
         return $tags;
-    }
-
-    public static function url($string, $context = null)
-    {
-        if ($context == null) {
-            return $string;
-        }
-
-        while (preg_match(self::getTagsRegexp(), $string, $groups) > 0) {
-            $property = strtolower($groups[1]);
-            $value = null;
-            if (static::rReplaceProperty($context, $property, $value)) {
-                break;
-            }
-
-            $string = str_replace($groups[0], $value, $string);
-        }
-
-        return $string;
     }
 }
