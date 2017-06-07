@@ -20,81 +20,194 @@ namespace Bitendian\TBP\Domain\Connection\Interfaces;
 
 interface CacheConnectionInterface
 {
-    // opens a connection
+    /**
+     * opens a connection
+     * @return mixed
+     */
     public function open();
 
-    // closes a connection
+    /**
+     * closes a connection
+     * @return mixed
+     */
     public function close();
 
-    // retrieve existing keys (works with wildcards)
+    /**
+     * retrieve existing keys (works with wildcards)
+     * @param $pattern
+     * @return mixed
+     */
     public function keys($pattern);
 
-    // checks if key(s) exists (works with arrays)
+    /**
+     * checks if key(s) exists (works with arrays)
+     * @param $keys
+     * @return mixed
+     */
     public function exists($keys);
 
-    // removes some key(s) (works with arrays)
+    /**
+     * removes some key(s) (works with arrays)
+     * @param $keys
+     * @return mixed
+     */
     public function remove($keys);
 
-    // removes all keys
+    /**
+     * removes all keys
+     * @return mixed
+     */
     public function clear();
 
-    // stores single value into key
+    /**
+     * stores single value into key
+     * @param $key
+     * @param $value
+     * @return mixed
+     */
     public function store($key, $value);
 
-    // gets a key value
+    /**
+     * gets a key value
+     * @param $key
+     * @return mixed
+     */
     public function get($key);
 
-    // gets list cardinality
+    /**
+     * gets list cardinality
+     * @param $key
+     * @return mixed
+     */
     public function listCardinality($key);
 
-    // stores some value(s) into a list beginning (works with arrays)
+    /**
+     * stores some value(s) into a list beginning (works with arrays)
+     * @param $key
+     * @param $values
+     * @return mixed
+     */
     public function listPrepend($key, $values);
 
-    // stores some value(s) into a list end (works with arrays)
+    /**
+     * stores some value(s) into a list end (works with arrays)
+     * @param $key
+     * @param $values
+     * @return mixed
+     */
     public function listAppend($key, $values);
 
-    // stores some value into a list at index
+    /**
+     * stores some value into a list at index
+     * @param $key
+     * @param $index
+     * @param $value
+     * @return mixed
+     */
     public function listStore($key, $index, $value);
 
-    // gets all values from a list
+    /**
+     * gets all values from a list
+     * @param $key
+     * @return mixed
+     */
     public function listGetAll($key);
 
-    // stores some value(s) into a set (works with arrays)
+    /**
+     * stores some value(s) into a set (works with arrays)
+     * @param $key
+     * @param $values
+     * @return mixed
+     */
     public function setAdd($key, $values);
 
-    // gets set cardianlity
+    /**
+     * gets set cardinality
+     * @param $key
+     * @return mixed
+     */
     public function setCardinality($key);
 
-    // removes some value(s) from a set
+    /**
+     * removes some value(s) from a set
+     * @param $key
+     * @param $values
+     * @return mixed
+     */
     public function setRemove($key, $values);
 
-    // gets all values from a set
+    /**
+     * gets all values from a set
+     * @param $key
+     * @return mixed
+     */
     public function setGetAll($key);
 
-    // checks if a set contains some value(s) (work with arrays)
+    /**
+     * checks if a set contains some value(s) (work with arrays)
+     * @param $key
+     * @param $values
+     * @return mixed
+     */
     public function setContains($key, $values);
 
-    // gets diffrecence between sets
+    /**
+     * gets difference between sets
+     * @param $keys
+     * @return mixed
+     */
     public function setGetDiff($keys);
 
-    // stores difference between sets into a key
+    /**
+     * stores difference between sets into a key
+     * @param $key
+     * @param $keys
+     * @return mixed
+     */
     public function setStoreDiff($key, $keys);
 
-    // stores some value(s) into a sorted set with their scores (works with arrays)
+    /**
+     * stores some value(s) into a sorted set with their scores (works with arrays)
+     * @param $key
+     * @param $scores
+     * @param $values
+     * @return mixed
+     */
     public function sortedSetAdd($key, $scores, $values);
 
-    // gets all values from a sorted set
+    /**
+     * gets all values from a sorted set
+     * @param $key
+     * @return mixed
+     */
     public function sortedSetGetAll($key);
 
-    // stores some pairs key => values into a hash
+    /**
+     * stores some pairs key => values into a hash
+     * @param $key
+     * @param $data
+     * @return mixed
+     */
     public function hashAdd($key, $data);
 
-    // get a value from a given key in a hash
+    /**
+     * get a value from a given key in a hash
+     * @param $key
+     * @param $field
+     * @return mixed
+     */
     public function hashGet($key, $field);
 
-    // get all key value pairs from hash
+    /**
+     * get all key value pairs from hash
+     * @param $key
+     * @return mixed
+     */
     public function hashGetAll($key);
 
-    // get database information
+    /**
+     * get database information
+     * @return mixed
+     */
     public function info();
 }

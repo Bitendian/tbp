@@ -20,30 +20,65 @@ namespace Bitendian\TBP\Domain\Connection\Interfaces;
 
 interface DatabaseConnectionInterface
 {
-    // opens the connection
+    /**
+     * opens the connection
+     * @return mixed
+     */
     public function open();
 
-    // closes the connection
+    /**
+     * closes the connection
+     * @return mixed
+     */
     public function close();
 
-    // returns select result
+    /**
+     * returns select result
+     * @param string $sql
+     * @param array $params
+     * @return array
+     */
     public function select($sql, $params = array());
 
-    // retuns command result
+    /**
+     * returns command result
+     * @param $sql
+     * @param array $params
+     * @return boolean
+     */
     public function command($sql, $params = array());
 
-    // returns last inserted id with the connection
+    /**
+     * returns last inserted id with the connection
+     * @param string|null $table
+     * @param string|null $field
+     * @return integer
+     */
     public function lastInsertId($table = null, $field = null);
 
-    // returns all values of a enumeration
+    /**
+     * returns all values of a enumeration
+     * @param string $table
+     * @param string $field
+     * @return array
+     */
     public function getEnumValues($table, $field);
 
-    // begin a transaction
+    /**
+     * begin a transaction
+     * @return mixed
+     */
     public function begin();
 
-    // commits a transaction
+    /**
+     * commits a transaction
+     * @return mixed
+     */
     public function commit();
 
-    // rollbacks a transaction
+    /**
+     * rollbacks a transaction
+     * @return mixed
+     */
     public function rollback();
 }

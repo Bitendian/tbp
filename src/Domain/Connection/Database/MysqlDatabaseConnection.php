@@ -25,10 +25,19 @@ use Bitendian\TBP\Domain\Connection\Interfaces\DatabaseConnectionInterface as Da
 
 class MysqlDatabaseConnection implements DatabaseConnectionInterface
 {
-
+    /**
+     * @var \mysqli
+     */
     private $connection;
+    /**
+     * @var \stdClass
+     */
     private $config;
 
+    /**
+     * MysqlDatabaseConnection constructor.
+     * @param \stdClass $config
+     */
     public function __construct($config)
     {
         $this->config = $config;
@@ -47,7 +56,7 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
     public function open()
     {
         if (!($this->connection = $this->createConnectionFromConfig())) {
-            throw new TBPException($this->connection->connect_error(), $this->connection->connect_errno());
+            throw new TBPException($this->connection->connect_error, $this->connection->connect_errno);
         }
 
         $this->connection->set_charset('utf8');
@@ -61,6 +70,12 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
         }
     }
 
+    /**
+     * @param string $table
+     * @param string $field
+     * @return array
+     * @throws TBPException
+     */
     public function getEnumValues($table, $field)
     {
         $sql = '
@@ -91,6 +106,12 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
         return str_getcsv($result, ',', "'");
     }
 
+    /**
+     * @param string $sql
+     * @param array $params
+     * @return array
+     * @throws TBPException
+     */
     public function select($sql, $params = array())
     {
         if (!($statement = $this->connection->prepare($sql))) {
@@ -151,6 +172,12 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
         return $result;
     }
 
+    /**
+     * @param string $sql
+     * @param array $params
+     * @return bool
+     * @throws TBPException
+     */
     public function command($sql, $params = array())
     {
         if (!($statement = $this->connection->prepare($sql))) {
@@ -176,6 +203,11 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
         return true;
     }
 
+    /**
+     * @param string|null $table
+     * @param string|null $field
+     * @return integer
+     */
     public function lastInsertId($table = null, $field = null)
     {
         return $this->connection->insert_id;
@@ -183,19 +215,19 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
 
     public function begin()
     {
-        $this->connection->autocommit = false;
+        $this->connection->autocommit(false);
         $this->connection->begin_transaction();
     }
 
     public function commit()
     {
         $this->connection->commit();
-        $this->connection->autocommit = true;
+        $this->connection->autocommit(true);
     }
 
     public function rollback()
     {
         $this->connection->rollback();
-        $this->connection->autocommit = true;
+        $this->connection->autocommit(true);
     }
 }

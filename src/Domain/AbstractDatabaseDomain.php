@@ -32,7 +32,11 @@ abstract class AbstractDatabaseDomain
      */
     protected $connection;
 
-    // helper function: returns a single result (as object) or false if there are 0 or more than 1 results
+    /**
+     * helper function: returns a single result (as object) or false if there are 0 or more than 1 results
+     * @param $results
+     * @return bool|object
+     */
     protected static function getSingle($results)
     {
         if (is_array($results) && count($results) == 1) {
@@ -42,7 +46,11 @@ abstract class AbstractDatabaseDomain
         return false;
     }
 
-    // helper function: returns a collection of results (as objects array)
+    /**
+     * helper function: returns a collection of results (as objects array)
+     * @param $results
+     * @return array
+     */
     protected static function getAll($results)
     {
         $to_object = function ($array) {
@@ -52,7 +60,12 @@ abstract class AbstractDatabaseDomain
         return array_map($to_object, $results);
     }
 
-    // helper function: if a row has been inserted returns last inserted autoincrement id (or false)
+    //
+    /**
+     * helper function: if a row has been inserted returns last inserted autoincrement id (or false)
+     * @param $result
+     * @return integer|bool
+     */
     protected function insertWithAutoincrement($result)
     {
         if ($result != false) {
