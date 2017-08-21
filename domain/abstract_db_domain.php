@@ -7,7 +7,7 @@ abstract class abstract_db_domain {
 	static $connection;
 
 	public static function get_single($results) {
-		if (is_array($results) && count($results) == 1) return (object)$results[0];
+		if (is_array($results) && count($results) == 1) return (object)array_shift($results);
 		return false;
 	}
 
