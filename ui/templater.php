@@ -1,15 +1,17 @@
 <?php
 
-require_once(TBP_BASE_PATH . "/abstract_renderizable.php");
+if (!defined('TBP_BASE_PATH')) die('FATAL: TBP_BASE_PATH undefined');
+
+require_once(TBP_BASE_PATH . "/ui/abstract_renderizable.php");
 require_once(TBP_BASE_PATH . "/config.php");
 require_once(TBP_BASE_PATH . "/util.php");
 
 class templater extends abstract_renderizable {
 
-	var $source;
-	var $context;
-	var $result;
-	var $replaced_array_tags = array();
+	private $source;
+	private $context;
+	private $result;
+	private $replaced_array_tags = array();
 
 	const SEPARATOR = '@@';
 	const ARRAY_SEPARATOR = '@@@';

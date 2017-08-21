@@ -1,7 +1,9 @@
 <?php
 
-require_once(TBP_BASE_PATH . '/interfaces/i_fetch.php');
-require_once(TBP_BASE_PATH . '/abstract_renderizable.php');
+if (!defined('TBP_BASE_PATH')) die('FATAL: TBP_BASE_PATH undefined');
+
+require_once(TBP_BASE_PATH . '/ui/interfaces/i_fetch.php');
+require_once(TBP_BASE_PATH . '/ui/abstract_renderizable.php');
 
 abstract class widget extends abstract_renderizable implements i_fetch {
 
@@ -17,4 +19,3 @@ abstract class widget extends abstract_renderizable implements i_fetch {
 		$this->fetch($params);
 	}
 }
-

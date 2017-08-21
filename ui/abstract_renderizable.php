@@ -1,6 +1,8 @@
 <?php
 
-require_once(TBP_BASE_PATH . '/interfaces/i_render.php');
+if (!defined('TBP_BASE_PATH')) die('FATAL: TBP_BASE_PATH undefined');
+
+require_once(TBP_BASE_PATH . '/ui/interfaces/i_render.php');
 
 abstract class abstract_renderizable implements i_render {
 

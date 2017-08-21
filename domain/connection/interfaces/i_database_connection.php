@@ -1,6 +1,6 @@
 <?php
 
-interface db_connection {
+interface i_database_connection {
 
 	function open();
 
@@ -19,6 +19,4 @@ interface db_connection {
 	function commit();
 
 	function rollback();
-
 }
-

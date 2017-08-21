@@ -1,8 +1,7 @@
 <?php
 
-/**
- * Clase singleton que lee la configuracion de la aplicacion.
- */
+if (!defined('CONFIG_PATH')) die('FATAL: CONFIG_PATH undefined');
+
 class config {
 
 	const SEPARATOR = '=';
@@ -19,7 +18,7 @@ class config {
 		$this->load_dir($dir);
 	}
 
-	public function load_dir($dir) {
+	private function load_dir($dir) {
 		
 		if (is_dir($dir)) {
 			$link = opendir($dir);
@@ -43,8 +42,7 @@ class config {
 		}
 	}
 
-	public static function create_config_object($filename) {
-		
+	private function create_config_object($filename) {
 		$tmp = new stdClass();
 		$link = fopen($filename, 'r');
 		while ($data = fgetcsv($link, 0, self::SEPARATOR)) {
@@ -55,7 +53,6 @@ class config {
 					$tmp->$value = trim(implode(self::SEPARATOR, array_slice($data, 1)));
 					if (strtolower($tmp->$value) == "true") $tmp->$value = true;
 					elseif (strtolower($tmp->$value) == "false") $tmp->$value = false;
-					else $tmp->$value = str_replace('BASEPATH', BASEPATH, $tmp->$value);
 				}
 			}
 		}
@@ -64,11 +61,13 @@ class config {
 	}
 
 	public static function get_config($key = null) {
+		if (config::$instance == null)
+			config::$instance = new config(CONFIG_PATH);
+		if ($key == null)
+			return config::$instance->config;
+		elseif (isset(config::$instance->config->$key))
+			return config::$instance->config->$key;
 
-		if (!defined('BASEPATH')) die('undefined BASEPATH constant');
-		if (config::$instance == null) config::$instance = new config(BASEPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR);
-		if ($key == null) return config::$instance->config;
-		elseif (isset(config::$instance->config->$key)) return config::$instance->config->$key;
 		return null;
 	}
 }
