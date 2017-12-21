@@ -38,6 +38,9 @@ class Config
     // current instance folder
     private $folder;
 
+    // config file extension
+    private $extension = 'config';
+
     /**
      * Config constructor.
      * @param string $folder
@@ -48,15 +51,16 @@ class Config
         if (($this->folder = realpath($folder)) === false || !is_dir($this->folder)) {
             throw new TBPException("folder " . $folder . " not found", -1);
         } elseif (!isset(self::$folders[$this->folder])) {
-            self::$folders[$this->folder] = self::loadFolder($this->folder);
+            self::$folders[$this->folder] = self::loadFolder($this->folder, $this->extension);
         }
     }
 
     /**
      * @param string $folder
+     * @param string $extension
      * @return array
      */
-    private static function loadFolder($folder)
+    private static function loadFolder($folder, $extension)
     {
         $configs = array();
         $link = opendir($folder);
@@ -65,7 +69,7 @@ class Config
             $dot_counter = count($name);
             if ($dot_counter > 1) {
                 //  extension ".config"
-                if (isset($name[($dot_counter - 1)]) && $name[($dot_counter - 1)] == 'config') {
+                if (isset($name[($dot_counter - 1)]) && $name[($dot_counter - 1)] == $extension) {
                     $config_array_name = array();
                     for ($i = 0; $i < ($dot_counter - 1); $i++) {
                         $config_array_name[] = $name[$i];
@@ -118,5 +122,11 @@ class Config
         }
 
         return null;
+    }
+
+    public function setConfigFileExtension($extension)
+    {
+        $this->extension = $extension;
+        self::$folders[$this->folder] = self::loadFolder($this->folder, $this->extension);
     }
 }
