@@ -11,15 +11,15 @@
 
 namespace Bitendian\TBP\Domain\Connection\Database;
 
-use Bitendian\TBP\TBPException as TBPException;
 use Bitendian\TBP\Domain\Connection\Interfaces\DatabaseConnectionInterface as DatabaseConnectionInterface;
+use Bitendian\TBP\TBPException;
 
 /*
- * Class with implementation of DatabaseConnectionInterface for mysql.
+ * Class with implementation of DatabaseConnectionInterface for MySQL.
  *
  * Uses mysqli and prepared statements.
  *
- * Select returns rows in an associative array with autoincrement field as index if exists.
+ * Select returns by default rows in an associative array with autoincrement field as index if exists.
 */
 
 class MysqlDatabaseConnection implements DatabaseConnectionInterface

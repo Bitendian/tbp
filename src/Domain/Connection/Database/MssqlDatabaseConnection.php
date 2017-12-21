@@ -1,9 +1,26 @@
 <?php
 
-namespace Assegura\App\Domain\Connection\Database;
+/*
+ * This file is part of the TBP package.
+ *
+ * (c) Bitendian <info@bitendian.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Bitendian\TBP\Domain\Connection\Database;
 
 use \Bitendian\TBP\Domain\Connection\Interfaces\DatabaseConnectionInterface;
 use Bitendian\TBP\TBPException;
+
+/*
+ * Class with implementation of DatabaseConnectionInterface for MicrosoftSQL.
+ *
+ * Uses sqlsrv and prepared statements.
+ *
+ * Select returns rows in an associative array with autoincrement field as index if exists.
+*/
 
 class MssqlDatabaseConnection implements DatabaseConnectionInterface
 {
@@ -44,8 +61,7 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
     public function open()
     {
         if (!($this->connection = $this->createConnectionFromConfig())) {
-            print_r(sqlsrv_errors());
-            die();
+            throw new TBPException($this->connection->connect_error, $this->connection->connect_errno);
         }
     }
 
