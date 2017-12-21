@@ -39,7 +39,7 @@ class Config
     private $folder;
 
     // config file extension
-    private $extension = 'config';
+    private $extension = '.config';
 
     /**
      * Config constructor.
@@ -64,24 +64,28 @@ class Config
     {
         $configs = array();
         $link = opendir($folder);
-        while (($file = readdir($link))) {
-            $name = preg_split('/[.]/', $file);
-            $dot_counter = count($name);
-            if ($dot_counter > 1) {
-                //  extension ".config"
-                if (isset($name[($dot_counter - 1)]) && $name[($dot_counter - 1)] == $extension) {
-                    $config_array_name = array();
-                    for ($i = 0; $i < ($dot_counter - 1); $i++) {
-                        $config_array_name[] = $name[$i];
-                    }
-                    $config_name = implode('.', $config_array_name);
-
-                    $configs[$config_name] = self::createConfigObject($folder . DIRECTORY_SEPARATOR . $file);
-                }
+        while (($fileName = readdir($link))) {
+            if (self::endsWidth($fileName, $extension)) {
+                $configName = substr($fileName, 0, strlen($fileName) - strlen($extension));
+                $configs[$configName] = self::createConfigObject($folder . DIRECTORY_SEPARATOR . $fileName);
             }
         }
-
         return $configs;
+    }
+
+    /**
+     * @param string $fileName
+     * @param string $extension
+     * @return bool
+     */
+    private static function endsWidth($fileName, $extension)
+    {
+        $fileNameLength = \strlen($fileName);
+        $extensionLength = \strlen($extension);
+        if ($extensionLength >= $fileNameLength) {
+            return false;
+        }
+        return \substr_compare($fileName, $extension, $fileNameLength - $extensionLength, $extensionLength) === 0;
     }
 
     /**
