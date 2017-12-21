@@ -12,7 +12,6 @@
 namespace Bitendian\TBP\Domain\Connection\Database;
 
 use Bitendian\TBP\TBPException as TBPException;
-use Bitendian\TBP\Utils\Config as Config;
 use Bitendian\TBP\Domain\Connection\Interfaces\DatabaseConnectionInterface as DatabaseConnectionInterface;
 
 /*
@@ -35,12 +34,22 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
     private $config;
 
     /**
+     * @var bool
+     */
+    private $useAssociativeArrayWhenPossible = true;
+
+    /**
      * MysqlDatabaseConnection constructor.
      * @param \stdClass $config
      */
     public function __construct($config)
     {
         $this->config = $config;
+        $this->useAssociativeArrayWhenPossible = (
+            !isset($this->config) ||
+            !isset($this->config->use_associative_array) ||
+            strtolower($this->config->use_associative_array) != 'false'
+        );
     }
 
     private function createConnectionFromConfig()
@@ -151,7 +160,7 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
                 $row_assoc[$key] = $value;
             }
 
-            if ($key_field != null) {
+            if ($key_field != null && $this->useAssociativeArrayWhenPossible) {
                 if (isset($result[$row_assoc[$key_field]])) {
                     // is impossible to index by key_field, first we convert associtive to indexed array
                     $result = array_values($result);
