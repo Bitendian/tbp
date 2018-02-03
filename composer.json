@@ -20,7 +20,7 @@
         "phpunit/phpunit": "~4.0"
     },
     "suggest": {
-        "predis": "Redis connection implementation"
+        "predis/predis": "Redis connection implementation"
     },
     "autoload": {
         "psr-4": {"Bitendian\\TBP\\": "src/"}
