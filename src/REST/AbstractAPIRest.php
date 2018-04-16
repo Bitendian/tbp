@@ -45,6 +45,10 @@ abstract class AbstractAPIRest
     const POST_HTTP_METHOD = 'POST';
     const GET_HTTP_METHOD = 'GET';
 
+    /**
+     * AbstractAPIRest constructor.
+     * @throws TBPException
+     */
     public function __construct()
     {
         $this->path = explode('/', trim($_SERVER['REDIRECT_URL'], '/'));

@@ -11,7 +11,7 @@
 
 namespace Bitendian\TBP\UI\Interfaces;
 
-/*
+/**
  * Interface to be implemented by modules that needs to modify model.
  *
  * This interface should not be implemented outside TBP. Abstract classes for modules that implements this interface are
@@ -26,7 +26,6 @@ namespace Bitendian\TBP\UI\Interfaces;
  * Action must be called before any fetch or render. It is responsability of the app ensure (or not) that same instance
  * of the Component is called on action stage and on fetch/render stage.
  */
-
 interface ActionInterface
 {
     public function action(&$params);

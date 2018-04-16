@@ -11,7 +11,7 @@
 
 namespace Bitendian\TBP\Utils;
 
-/*
+/**
  * Class to manage and centralize messages to be sended to user. Messages are classified into:
  *
  * Info messages
@@ -28,7 +28,6 @@ namespace Bitendian\TBP\Utils;
  * proper array is provided then that array is used. If no array is provided storing and retrieving relays on SESSION.
  * Once restored, messages are removed from array.
  */
-
 class SystemMessages
 {
     protected static $errors = array();

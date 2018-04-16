@@ -14,7 +14,7 @@ namespace Bitendian\TBP\UI;
 use Bitendian\TBP\UI\Interfaces\FetchInterface as FetchInterface;
 use Bitendian\TBP\UI\AbstractRenderizable as AbstractRenderizable;
 
-/*
+/**
  * Class to extend in order to create Widgets on apps.
  *
  * Widget is a module that has the ability of read models and show views.
@@ -30,7 +30,6 @@ use Bitendian\TBP\UI\AbstractRenderizable as AbstractRenderizable;
  * - prepare views with provided view models
  * - call nested modules render method
  */
-
 abstract class AbstractWidget extends AbstractRenderizable implements FetchInterface
 {
 }

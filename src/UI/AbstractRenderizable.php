@@ -13,7 +13,7 @@ namespace Bitendian\TBP\UI;
 
 use Bitendian\TBP\UI\Interfaces\RenderInterface as RenderInterface;
 
-/*
+/**
  * Class to be extended by modules that needs to render views.
  *
  * This class should not be extended outside TBP. Abstract classes for modules that extends this class are
@@ -23,7 +23,6 @@ use Bitendian\TBP\UI\Interfaces\RenderInterface as RenderInterface;
  * method. In AbstractRenderizable extension classes toString is overwritten to get render result. This means classes
  * that extends AbstractRenderizable can be treated as strings (where string is view code returned by render method).
 */
-
 abstract class AbstractRenderizable implements RenderInterface
 {
     private $rendered_html = null;

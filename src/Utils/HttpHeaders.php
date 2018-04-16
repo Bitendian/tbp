@@ -11,12 +11,11 @@
 
 namespace Bitendian\TBP\Utils;
 
-/*
+/**
  * Class to manage and centralize http headers to be sended to user.
  *
  * Class methods must be static and HttpHeaders follows Singleton pattern.
  */
-
 class HttpHeaders
 {
     protected static $headers = array();

@@ -11,13 +11,12 @@
 
 namespace Bitendian\TBP\Domain\Connection\Interfaces;
 
-/*
+/**
  * Interface to be implemented by classes that provides access to a database server
  *
  * This interface can be implemented outside TBP. However TBP will provide implementations for well known database
  * servers (mysql, postgres)
 */
-
 interface DatabaseConnectionInterface
 {
     /**

@@ -52,6 +52,7 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
         );
     }
 
+
     private function createConnectionFromConfig()
     {
         return new \mysqli(
@@ -62,6 +63,10 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
         );
     }
 
+    /**
+     * open database connection
+     * @throws TBPException
+     */
     public function open()
     {
         if (!($this->connection = $this->createConnectionFromConfig())) {
@@ -72,6 +77,10 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
         $this->connection->query('SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED');
     }
 
+    /**
+     * close database connection
+     * @throws TBPException
+     */
     public function close()
     {
         if (!$this->connection->close()) {
@@ -222,18 +231,27 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
         return $this->connection->insert_id;
     }
 
+    /**
+     * begin transaction
+     */
     public function begin()
     {
         $this->connection->autocommit(false);
         $this->connection->begin_transaction();
     }
 
+    /**
+     * commit transaction
+     */
     public function commit()
     {
         $this->connection->commit();
         $this->connection->autocommit(true);
     }
 
+    /**
+     * rollback transaction
+     */
     public function rollback()
     {
         $this->connection->rollback();

@@ -11,7 +11,7 @@
 
 namespace Bitendian\TBP\UI\Interfaces;
 
-/*
+/**
  * Interface to be implemented by modules that needs to access model for reading.
  *
  * This interface should not be implemented outside TBP. Abstract classes for modules that implements this interface are
@@ -27,7 +27,6 @@ namespace Bitendian\TBP\UI\Interfaces;
  * - read model and prepare view model for render stage
  * - call nested modules fetch method
  */
-
 interface FetchInterface
 {
     public function fetch(&$params);

@@ -11,17 +11,11 @@
 
 namespace Bitendian\TBP\Domain;
 
-use Bitendian\TBP\Domain\Connection\Database\MysqlDatabaseConnection as MysqlDatabaseConnection;
+use Bitendian\TBP\Domain\Connection\Database\MysqlDatabaseConnection;
 
-/*
+/**
  * Abstract class to be extended by app classes that needs to access a mysql domain.
- *
- * Provides two convenience methods to manage select results:
- *
- * - get_single returns a single object (or false) from selects that returns only one value
- * - get_all returns array of objects with all results from selects that returns multiple values
-*/
-
+ */
 abstract class AbstractMysqlDomain extends AbstractDatabaseDomain
 {
     /**

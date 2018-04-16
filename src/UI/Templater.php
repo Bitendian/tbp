@@ -11,7 +11,7 @@
 
 namespace Bitendian\TBP\UI;
 
-/*
+/**
  * Class to templatize.
  *
  * Templates can use a collection of marks to be replaced by Templater.
@@ -36,7 +36,6 @@ namespace Bitendian\TBP\UI;
  * ##@@VALUE@@## is a valid clause, with Templater precedence that means "first replace with the value on context and
  * then make a translation of this replacement". This is valid for ##@@PROPERTY.VALUE@@## as well.
 */
-
 class Templater extends AbstractRenderizable
 {
     private $source;
@@ -47,6 +46,11 @@ class Templater extends AbstractRenderizable
     const ARRAY_SEPARATOR = '%%';
     const GETTEXT_SEPARATOR = '##';
 
+    /**
+     * Templater constructor.
+     * @param $source
+     * @param null $context
+     */
     public function __construct($source, $context = null)
     {
         $this->source = $source;
@@ -170,7 +174,7 @@ class Templater extends AbstractRenderizable
             $property = strtolower($groups[1]);
             $value = array();
             foreach ($this->context as $context) {
-                if (self::rReplaceProperty($context, $property, $value, true)) {
+                if (self::rReplaceProperty($context, $property, $value)) {
                     break;
                 }
             }

@@ -11,10 +11,9 @@
 
 namespace Bitendian\TBP\Utils;
 
-/*
+/**
  * Class to manage pagination info in all kind of access to domains.
  */
-
 class Pagination
 {
     protected $current_page;

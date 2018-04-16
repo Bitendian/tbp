@@ -11,7 +11,7 @@
 
 namespace Bitendian\TBP\UI\Interfaces;
 
-/*
+/**
  * Interface to be implemented by modules that needs to render views.
  *
  * This interface should not be implemented outside TBP. Abstract classes for modules that implements this interface are
@@ -26,7 +26,6 @@ namespace Bitendian\TBP\UI\Interfaces;
  * - prepare views with provided view models
  * - call nested modules render method
 */
-
 interface RenderInterface
 {
     public function render();

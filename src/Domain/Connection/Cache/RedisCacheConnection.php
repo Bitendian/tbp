@@ -12,15 +12,13 @@
 namespace Bitendian\TBP\Domain\Connection\Cache;
 
 use Predis\Client as Client;
-
 use Bitendian\TBP\Domain\Connection\Interfaces\CacheConnectionInterface as CacheConnectionInterface;
 
-/*
+/**
  * Class with implementation of CacheConnectionInterface for redis.
  *
  * Uses predis third-party library.
 */
-
 class RedisCacheConnection implements CacheConnectionInterface
 {
     /**

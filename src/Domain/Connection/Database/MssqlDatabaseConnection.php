@@ -14,14 +14,13 @@ namespace Bitendian\TBP\Domain\Connection\Database;
 use \Bitendian\TBP\Domain\Connection\Interfaces\DatabaseConnectionInterface;
 use Bitendian\TBP\TBPException;
 
-/*
+/**
  * Class with implementation of DatabaseConnectionInterface for MicrosoftSQL.
  *
  * Uses sqlsrv and prepared statements.
  *
  * Select returns rows in an associative array with autoincrement field as index if exists.
 */
-
 class MssqlDatabaseConnection implements DatabaseConnectionInterface
 {
     /**
@@ -42,6 +41,9 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
         $this->config = $config;
     }
 
+    /**
+     * @return false|resource
+     */
     private function createConnectionFromConfig()
     {
         $connectionInfo  = array(
@@ -52,11 +54,12 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
             'TransactionIsolation' => SQLSRV_TXN_READ_UNCOMMITTED
         );
 
-        return sqlsrv_connect($this->config->serverName, $connectionInfo );
+        return sqlsrv_connect($this->config->serverName, $connectionInfo);
     }
 
     /**
      * opens the connection
+     * @throws TBPException
      */
     public function open()
     {
@@ -67,12 +70,12 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
 
     /**
      * closes the connection
+     * @throws TBPException
      */
     public function close()
     {
         if (!sqlsrv_close($this->connection)) {
-            print_r(sqlsrv_errors());
-            die();
+            throw new TBPException($this->connection->error, $this->connection->errno);
         }
     }
 
@@ -81,27 +84,25 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
      * @param string $sql
      * @param array $params
      * @return array
+     * @throws TBPException
      */
     public function select($sql, $params = array())
     {
         if (!($statement = sqlsrv_prepare($this->connection, $sql, $params))) {
-            print_r(sqlsrv_errors());
-            die();
+            throw new TBPException($this->connection->error, $this->connection->errno);
         }
 
-        if(sqlsrv_execute($statement) === false) {
-            print_r(sqlsrv_errors());
-            die();
+        if (sqlsrv_execute($statement) === false) {
+            throw new TBPException($this->connection->error, $this->connection->errno);
         }
 
         $result = array();
-        while ($row = sqlsrv_fetch_array( $statement, SQLSRV_FETCH_ASSOC )) {
+        while ($row = sqlsrv_fetch_array($statement, SQLSRV_FETCH_ASSOC)) {
             $result[] = $row;
         }
 
-        if(sqlsrv_free_stmt($statement) === false) {
-            print_r(sqlsrv_errors());
-            die();
+        if (sqlsrv_free_stmt($statement) === false) {
+            throw new TBPException($this->connection->error, $this->connection->errno);
         }
 
         return $result;
@@ -112,77 +113,78 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
      * @param $sql
      * @param array $params
      * @return boolean
+     * @throws TBPException
      */
     public function command($sql, $params = array())
     {
         if (!($statement = sqlsrv_prepare($this->connection, $sql, $params))) {
-            print_r(sqlsrv_errors());
-            die();
+            throw new TBPException($this->connection->error, $this->connection->errno);
         }
 
-        if(sqlsrv_execute($statement) === false) {
-            print_r(sqlsrv_errors());
-            die();
+        if (sqlsrv_execute($statement) === false) {
+            throw new TBPException($this->connection->error, $this->connection->errno);
         }
 
-        if(sqlsrv_free_stmt($statement) === false) {
-            print_r(sqlsrv_errors());
-            die();
+        if (sqlsrv_free_stmt($statement) === false) {
+            throw new TBPException($this->connection->error, $this->connection->errno);
         }
 
         return true;
     }
 
     /**
-     * returns last inserted id with the connection
      * @param string|null $table
      * @param string|null $field
+     * @return integer
      */
     public function lastInsertId($table = null, $field = null)
     {
         // TODO: Implement lastInsertId() method.
+        return 0;
     }
 
     /**
-     * returns all values of a enumeration
      * @param string $table
      * @param string $field
+     * @return array
+     * @throws TBPException
      */
     public function getEnumValues($table, $field)
     {
         // TODO: Implement getEnumValues() method.
+        return [];
     }
 
     /**
      * begin a transaction
+     * @throws TBPException
      */
     public function begin()
     {
         if (sqlsrv_begin_transaction($this->connection) === false) {
-            print_r(sqlsrv_errors());
-            die();
+            throw new TBPException($this->connection->error, $this->connection->errno);
         }
     }
 
     /**
      * commits a transaction
+     * @throws TBPException
      */
     public function commit()
     {
         if (sqlsrv_commit($this->connection) === false) {
-            print_r(sqlsrv_errors());
-            die();
+            throw new TBPException($this->connection->error, $this->connection->errno);
         }
     }
 
     /**
      * rollbacks a transaction
+     * @throws TBPException
      */
     public function rollback()
     {
         if (sqlsrv_rollback($this->connection) === false) {
-            print_r(sqlsrv_errors());
-            die();
+            throw new TBPException($this->connection->error, $this->connection->errno);
         }
     }
 }

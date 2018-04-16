@@ -11,7 +11,9 @@
 
 namespace Bitendian\TBP\Domain;
 
-/*
+use Bitendian\TBP\Domain\Connection\Interfaces\DatabaseConnectionInterface;
+
+/**
  * Abstract class to be extended by app classes that needs to access a database domain.
  *
  * Provides three convenience methods to manage select results:
@@ -20,11 +22,8 @@ namespace Bitendian\TBP\Domain;
  * - getAll returns array of objects with all results from selects that returns multiple values
  * - insertWithAutoincrement returns last insert id after making an insert into a table with ai
  *
- * TBP provides extensions classes for well known database servers (mysql, postgresql)
+ * TBP provides extensions classes for well known database servers (mysql, postgresql, mssql)
 */
-
-use Bitendian\TBP\Domain\Connection\Interfaces\DatabaseConnectionInterface;
-
 abstract class AbstractDatabaseDomain
 {
     /**

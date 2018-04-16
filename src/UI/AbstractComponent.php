@@ -14,7 +14,7 @@ namespace Bitendian\TBP\UI;
 use Bitendian\TBP\UI\Interfaces\ActionInterface as ActionInterface;
 use Bitendian\TBP\UI\AbstractWidget as AbstractWidget;
 
-/*
+/**
  * Class to extend in order to create Components on apps.
  *
  * Component is a module that has the ability of read and modify models and show views.
@@ -35,7 +35,6 @@ use Bitendian\TBP\UI\AbstractWidget as AbstractWidget;
  * - prepare views with provided view models
  * - call nested modules render method
  */
-
 abstract class AbstractComponent extends AbstractWidget implements ActionInterface
 {
     public $action;

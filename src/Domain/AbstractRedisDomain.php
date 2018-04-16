@@ -11,8 +11,12 @@
 
 namespace Bitendian\TBP\Domain;
 
-use Bitendian\TBP\Domain\Connection\Cache\RedisCacheConnection as RedisCacheConnection;
+use Bitendian\TBP\Domain\Connection\Cache\RedisCacheConnection;
 
+/**
+ * Class AbstractRedisDomain
+ * @package Bitendian\TBP\Domain
+ */
 abstract class AbstractRedisDomain extends AbstractCacheDomain
 {
     /**

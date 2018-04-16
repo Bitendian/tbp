@@ -11,14 +11,13 @@
 
 namespace Bitendian\TBP\Domain;
 
-/*
+use Bitendian\TBP\Domain\Connection\Interfaces\CacheConnectionInterface;
+
+/**
  * Abstract class to be extended by app classes that needs to access a cache domain.
  *
  * TBP provides extensions classes for well known cache servers (redis, memcached...)
 */
-
-use Bitendian\TBP\Domain\Connection\Interfaces\CacheConnectionInterface;
-
 abstract class AbstractCacheDomain
 {
     /**
