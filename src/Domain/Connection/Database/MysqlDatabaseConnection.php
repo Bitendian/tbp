@@ -48,7 +48,7 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
         $this->useAssociativeArrayWhenPossible = (
             !isset($this->config) ||
             !isset($this->config->use_associative_array) ||
-            strtolower($this->config->use_associative_array) != 'false'
+            strtolower($this->config->use_associative_array) != 'no'
         );
     }
 

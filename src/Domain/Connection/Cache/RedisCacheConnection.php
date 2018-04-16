@@ -48,6 +48,10 @@ class RedisCacheConnection implements CacheConnectionInterface
         $connection_parameters['host'] = $this->config->host;
         $connection_parameters['port'] = $this->config->port;
         $connection_parameters['database'] = $this->config->database;
+        if (isset($this->config->persistent)) {
+            $connection_parameters['persistent'] = $this->config->persistent;
+        }
+
 
         if (isset($this->config->read_write_timeout)) {
             $connection_parameters['read_write_timeout'] = $this->config->read_write_timeout;
