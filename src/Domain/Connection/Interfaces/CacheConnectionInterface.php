@@ -209,4 +209,10 @@ interface CacheConnectionInterface
      * @return mixed
      */
     public function info();
+
+    /**
+     * save database to disk
+     * @return mixed
+     */
+    public function save();
 }

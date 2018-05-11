@@ -193,4 +193,9 @@ class RedisCacheConnection implements CacheConnectionInterface
     {
         return $this->connection->info();
     }
+
+    public function save()
+    {
+        return $this->connection->save();
+    }
 }
