@@ -1,17 +1,8 @@
 <?php
 
-/*
- * This file is part of the TBP package.
- *
- * (c) Bitendian <info@bitendian.com>
- *
- * For the full copyright and license information, please view the LICENSE file that was distributed with this source
- * code.
- */
-
 namespace Bitendian\TBP\REST;
 
-use Bitendian\TBP\TBPException as TBPException;
+use Bitendian\TBP\TBPException;
 
 /**
  * Class to extend and create REST APIs.
@@ -23,7 +14,12 @@ use Bitendian\TBP\TBPException as TBPException;
  */
 abstract class AbstractAPIRest
 {
-    private static $requestStatus = array(
+    /**
+     * HTTP request status
+     *
+     * @var array
+     */
+    protected static $requestStatus = array(
         200 => 'OK',
         201 => 'Created',
         204 => 'No Content',
@@ -35,11 +31,52 @@ abstract class AbstractAPIRest
     );
 
     protected $api;
-    protected $method;
-    protected $body = null;
-    protected $path = array();
-    protected $params = array();
 
+    /**
+     * The request method
+     *
+     * @var string
+     */
+    protected $method;
+
+    /**
+     * The request body
+     *
+     * @var bool|null|string
+     */
+    protected $body = null;
+
+    /**
+     * The request body parsed (if possible) into a PHP array or object
+     *
+     * @var null|array|object
+     */
+    protected $bodyParsed = null;
+
+    /**
+     * List of request body parsers (e.g., url-encoded, JSON, XML, multipart)
+     *
+     * @var callable[]
+     */
+    protected $bodyParsers = [];
+
+    /**
+     * The request URI
+     *
+     * @var array
+     */
+    protected $path = [];
+
+    /**
+     * The request parameters
+     *
+     * @var array|string
+     */
+    protected $params = [];
+
+    /**
+     * HTTP method constants
+     */
     const DELETE_HTTP_METHOD = 'DELETE';
     const PUT_HTTP_METHOD = 'PUT';
     const POST_HTTP_METHOD = 'POST';
@@ -78,6 +115,50 @@ abstract class AbstractAPIRest
                 self::response('invalid method: ' . $this->method, 405);
                 break;
         }
+
+        $this->registerMediaTypeParser('application/json', function ($input) {
+            $result = json_decode($input, true);
+            if (!is_array($result)) {
+                return null;
+            }
+            return $result;
+        });
+
+        $this->registerMediaTypeParser('application/xml', function ($input) {
+            $backup = libxml_disable_entity_loader(true);
+            $backup_errors = libxml_use_internal_errors(true);
+            $result = simplexml_load_string($input);
+            libxml_disable_entity_loader($backup);
+            libxml_clear_errors();
+            libxml_use_internal_errors($backup_errors);
+            if ($result === false) {
+                return null;
+            }
+            return $result;
+        });
+
+        $this->registerMediaTypeParser('text/xml', function ($input) {
+            $backup = libxml_disable_entity_loader(true);
+            $backup_errors = libxml_use_internal_errors(true);
+            $result = simplexml_load_string($input);
+            libxml_disable_entity_loader($backup);
+            libxml_clear_errors();
+            libxml_use_internal_errors($backup_errors);
+            if ($result === false) {
+                return null;
+            }
+            return $result;
+        });
+
+        $this->registerMediaTypeParser('application/x-www-form-urlencoded', function ($input) {
+            parse_str($input, $data);
+            return $data;
+        });
+
+        if ($this->method === self::POST_HTTP_METHOD &&
+            in_array($this->getMediaType(), ['application/x-www-form-urlencoded', 'multipart/form-data'])) {
+            $this->bodyParsed = $this->parseBodyWithParams($_POST);
+        }
     }
 
     /**
@@ -115,12 +196,12 @@ abstract class AbstractAPIRest
     }
 
     /**
-     *
+     * Launch API execution
      */
     public function processAPI()
     {
         if (method_exists($this, strtolower($this->method))) {
-            self::response($this->{$this->method}());
+            self::response($this->{$this->method}($this->params));
         }
 
         self::response(array('error' => 'invalid method ' . $this->method), 405);
@@ -130,9 +211,9 @@ abstract class AbstractAPIRest
      * @param $data
      * @return array|string
      */
-    private function cleanInputs($data)
+    private function cleanInputs(&$data)
     {
-        $cleanInput = array();
+        $cleanInput = [];
 
         if (is_array($data)) {
             foreach ($data as $key => $value) {
@@ -146,22 +227,161 @@ abstract class AbstractAPIRest
     }
 
     /**
-     * @return mixed
+     * Get specified header
+     *
+     * @param string $header
+     * @return null|string
      */
-    abstract protected function get();
+    private function getHeader($header)
+    {
+        $index = str_replace('-', '_', strtoupper($header));
+        return isset($_SERVER[$index]) ? $_SERVER[$index] : null;
+    }
 
     /**
-     * @return mixed
+     * Get request content type.
+     *
+     * Note: This method is not part of the PSR-7 standard.
+     *
+     * @return null|string
      */
-    abstract protected function put();
+    private function getContentType()
+    {
+        return $this->getHeader('Content-Type');
+    }
 
     /**
-     * @return mixed
+     * Get request media type, if known.
+     *
+     * Note: This method is not part of the PSR-7 standard.
+     *
+     * @return null|string
      */
-    abstract protected function delete();
+    public function getMediaType()
+    {
+        $contentType = $this->getContentType();
+        if ($contentType) {
+            $contentTypeParts = preg_split('/\s*[;,]\s*/', $contentType);
+            return strtolower($contentTypeParts[0]);
+        }
+        return null;
+    }
 
     /**
+     * @return null|object|array
+     * @throws TBPException
+     */
+    protected function parseBody()
+    {
+        if ($this->bodyParsed) {
+            return $this->bodyParsed;
+        }
+
+        if (!$this->body) {
+            return null;
+        }
+
+        $mediaType = $this->getMediaType();
+        $parts = explode('+', $mediaType);
+        if (count($parts) >= 2) {
+            $mediaType = 'application/' . $parts[count($parts)-1];
+        }
+
+        if (isset($this->bodyParsers[$mediaType]) === true) {
+            $body = (string) $this->body;
+            $parsed = $this->bodyParsers[$mediaType]($body);
+
+            if (!is_null($parsed) && !is_object($parsed) && !is_array($parsed)) {
+                $message = _('Request body media type parser return value must be an array, an object, or null');
+                throw new TBPException($message, -1);
+            }
+            return $parsed;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     * @throws TBPException
+     */
+    protected function parseBodyWithParams($data)
+    {
+        if (!is_null($data) && !is_object($data) && !is_array($data)) {
+            throw new TBPException(_('Parsed body value must be an array, an object, or null'));
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param int $code
+     * @param string $status
+     */
+    public function setRequestStatus($code, $status)
+    {
+        self::$requestStatus[$code] = $status;
+    }
+
+    /**
+     * @param int $code
+     */
+    public function unsetRequestStatus($code)
+    {
+        unset(self::$requestStatus[$code]);
+    }
+
+    /**
+     * @param $mediaType
+     * @param callable $callable
+     */
+    private function registerMediaTypeParser($mediaType, callable $callable)
+    {
+        if ($callable instanceof \Closure) {
+            $callable = $callable->bindTo($this);
+        }
+        $this->bodyParsers[(string)$mediaType] = $callable;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
+    public function addParam($key, $value)
+    {
+        $this->params[$key] = $value;
+    }
+
+    /**
+     * @param string $key
+     */
+    public function removeParam($key)
+    {
+        unset($this->params[$key]);
+    }
+
+    /**
+     * @var array $params
      * @return mixed
      */
-    abstract protected function post();
+    abstract protected function get($params);
+
+    /**
+     * @var array $params
+     * @return mixed
+     */
+    abstract protected function put($params);
+
+    /**
+     * @var array $params
+     * @return mixed
+     */
+    abstract protected function delete($params);
+
+    /**
+     * @var array $params
+     * @return mixed
+     */
+    abstract protected function post($params);
 }
