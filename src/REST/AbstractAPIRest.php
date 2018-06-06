@@ -70,9 +70,9 @@ abstract class AbstractAPIRest
     /**
      * The request parameters
      *
-     * @var array|string
+     * @var array
      */
-    protected $params = [];
+    private $params = [];
 
     /**
      * HTTP method constants
@@ -365,23 +365,23 @@ abstract class AbstractAPIRest
      * @var array $params
      * @return mixed
      */
-    abstract protected function get($params);
+    abstract protected function get(&$params);
 
     /**
      * @var array $params
      * @return mixed
      */
-    abstract protected function put($params);
+    abstract protected function put(&$params);
 
     /**
      * @var array $params
      * @return mixed
      */
-    abstract protected function delete($params);
+    abstract protected function delete(&$params);
 
     /**
      * @var array $params
      * @return mixed
      */
-    abstract protected function post($params);
+    abstract protected function post(&$params);
 }
