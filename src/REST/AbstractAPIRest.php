@@ -203,7 +203,7 @@ abstract class AbstractAPIRest
     public function processAPI()
     {
         if (method_exists($this, strtolower($this->method))) {
-            $this->response($this->{$this->method}());
+            $this->response($this->{$this->method}($this->params));
         } else {
             $this->response(array('error' => 'invalid method ' . $this->method), 405);
         }
