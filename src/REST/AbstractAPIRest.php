@@ -75,6 +75,12 @@ abstract class AbstractAPIRest
     private $params = [];
 
     /**
+     * The API response
+     * @var null
+     */
+    protected $response = null;
+
+    /**
      * HTTP method constants
      */
     const DELETE_HTTP_METHOD = 'DELETE';
@@ -166,7 +172,7 @@ abstract class AbstractAPIRest
      * @param int $status
      * @param null $location
      */
-    public static function response($data, $status = 200, $location = null)
+    public function response($data, $status = 200, $location = null)
     {
         header('HTTP/1.1 ' . $status . ' ' . self::$requestStatus[$status]);
 
@@ -180,19 +186,15 @@ abstract class AbstractAPIRest
             );
         }
 
-        if ($data !== null) {
-            echo(json_encode($data));
-        }
-
-        die();
+        $this->response = $data;
     }
 
     /**
      * @param string $location
      */
-    protected static function redirect($location)
+    protected function redirect($location)
     {
-        self::response(null, 303, $location);
+        $this->response(null, 303, $location);
     }
 
     /**
@@ -201,11 +203,12 @@ abstract class AbstractAPIRest
     public function processAPI()
     {
         if (method_exists($this, strtolower($this->method))) {
-            self::response($this->{$this->method}($this->params));
+            $this->response($this->{$this->method}());
+        } else {
+            $this->response(array('error' => 'invalid method ' . $this->method), 405);
         }
-
-        self::response(array('error' => 'invalid method ' . $this->method), 405);
     }
+
 
     /**
      * @param $data
@@ -248,6 +251,16 @@ abstract class AbstractAPIRest
     private function getContentType()
     {
         return $this->getHeader('Content-Type');
+    }
+
+    /**
+     * Get processed response from API.
+     *
+     * @return mixed
+     */
+    public function getResponseData()
+    {
+        return $this->response;
     }
 
     /**
@@ -363,25 +376,21 @@ abstract class AbstractAPIRest
 
     /**
      * @var array $params
-     * @return mixed
      */
     abstract protected function get(&$params);
 
     /**
      * @var array $params
-     * @return mixed
      */
     abstract protected function put(&$params);
 
     /**
      * @var array $params
-     * @return mixed
      */
     abstract protected function delete(&$params);
 
     /**
      * @var array $params
-     * @return mixed
      */
     abstract protected function post(&$params);
 }
