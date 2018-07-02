@@ -12,7 +12,7 @@
 namespace Bitendian\TBP\Utils;
 
 /**
- * Class to manage and centralize http headers to be sended to user.
+ * Class to manage and centralize http headers to be sent to user.
  *
  * Class methods must be static and HttpHeaders follows Singleton pattern.
  */

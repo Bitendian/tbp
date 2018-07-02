@@ -22,7 +22,7 @@ namespace Bitendian\TBP\UI\Interfaces;
  * - fetch
  *
  * Fetch must be called before any render. App must ensure that same instance of component is called on fetch stage and
- * on render stage. Typical fetch responsability is:
+ * on render stage. Typical fetch responsibility is:
  *
  * - read model and prepare view model for render stage
  * - call nested modules fetch method

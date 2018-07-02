@@ -20,12 +20,12 @@ use Bitendian\TBP\UI\AbstractRenderizable as AbstractRenderizable;
  * Widget is a module that has the ability of read models and show views.
  *
  * Fetch must be called before any render. App must ensure that same instance of component is called on fetch stage and
- * on render stage. Typical fetch responsability is:
+ * on render stage. Typical fetch responsibility is:
  *
  * - read model and prepare view model for render stage
  * - call nested modules fetch method
  *
- * Render must be called after optional action stage and mandatory fetch stage. Typical render responsability is:
+ * Render must be called after optional action stage and mandatory fetch stage. Typical render responsibility is:
  *
  * - prepare views with provided view models
  * - call nested modules render method

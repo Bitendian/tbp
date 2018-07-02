@@ -12,7 +12,7 @@
 namespace Bitendian\TBP\Utils;
 
 /**
- * Class to manage and centralize messages to be sended to user. Messages are classified into:
+ * Class to manage and centralize messages to be sent to user. Messages are classified into:
  *
  * Info messages
  * Warning messages
@@ -20,7 +20,7 @@ namespace Bitendian\TBP\Utils;
  *
  * Class methods must be static and SystemMessages follows Singleton pattern.
  *
- * Messages are stored under microtime (with microseconds) key to be sorted in chronological order if needed.
+ * Messages are stored under micro-time (with microseconds) key to be sorted in chronological order if needed.
  *
  * Messages can be given with a custom id to be identified if needed.
  *

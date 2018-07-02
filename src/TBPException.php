@@ -11,9 +11,12 @@
 
 namespace Bitendian\TBP;
 
+use Exception;
+
 /**
- * Base Exception for all Exceptions throwed inside TBP
+ * Base Exception for all Exceptions thrown inside TBP
  */
-class TBPException extends \Exception
+class TBPException extends Exception
 {
+
 }

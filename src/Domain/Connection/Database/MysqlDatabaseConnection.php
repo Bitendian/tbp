@@ -171,7 +171,7 @@ class MysqlDatabaseConnection implements DatabaseConnectionInterface
 
             if ($key_field != null && $this->useAssociativeArrayWhenPossible) {
                 if (isset($result[$row_assoc[$key_field]])) {
-                    // is impossible to index by key_field, first we convert associtive to indexed array
+                    // is impossible to index by key_field, first we convert associative to indexed array
                     $result = array_values($result);
                     // no more key_field, is not really a key
                     $key_field = null;

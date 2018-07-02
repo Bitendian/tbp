@@ -21,7 +21,7 @@ namespace Bitendian\TBP\UI\Interfaces;
  *
  * - render
  *
- * Render must be called after optional action stage and mandatory fetch stage. Typical render responsability is:
+ * Render must be called after optional action stage and mandatory fetch stage. Typical render responsibility is:
  *
  * - prepare views with provided view models
  * - call nested modules render method
