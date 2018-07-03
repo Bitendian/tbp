@@ -89,6 +89,12 @@ abstract class AbstractAPIRest
     const GET_HTTP_METHOD = 'GET';
 
     /**
+     * When <b>TRUE</b>, returned objects will be converted into associative arrays.
+     * @var bool
+     */
+    protected $useAssociativeArrayOnJsonParseBody = true;
+
+    /**
      * AbstractAPIRest constructor.
      * @throws TBPException
      */
@@ -123,7 +129,7 @@ abstract class AbstractAPIRest
         }
 
         $this->registerMediaTypeParser('application/json', function ($input) {
-            $result = json_decode($input, true);
+            $result = json_decode($input, $this->useAssociativeArrayOnJsonParseBody);
             if (!is_array($result)) {
                 return null;
             }
