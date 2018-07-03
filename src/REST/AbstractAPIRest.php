@@ -130,7 +130,7 @@ abstract class AbstractAPIRest
 
         $this->registerMediaTypeParser('application/json', function ($input) {
             $result = json_decode($input, $this->useAssociativeArrayOnJsonParseBody);
-            if (!is_array($result)) {
+            if (!is_array($result) && !is_object($result)) {
                 return null;
             }
             return $result;
