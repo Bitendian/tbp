@@ -81,6 +81,11 @@ abstract class AbstractAPIRest
     protected $response = null;
 
     /**
+     * The API response status
+     */
+    protected $responseStatus = 200;
+
+    /**
      * HTTP method constants
      */
     const DELETE_HTTP_METHOD = 'DELETE';
@@ -124,7 +129,7 @@ abstract class AbstractAPIRest
                 $this->params = $this->cleanInputs($_GET);
                 break;
             default:
-                self::response('invalid method: ' . $this->method, 405);
+                $this->setResponseStatus(405, 'invalid method: ' . $this->method);
                 break;
         }
 
@@ -175,32 +180,35 @@ abstract class AbstractAPIRest
 
     /**
      * @param $data
-     * @param int $status
-     * @param null $location
      */
-    public function response($data, $status = 200, $location = null)
+    public function sendResponse($data)
     {
-        header('HTTP/1.1 ' . $status . ' ' . self::$requestStatus[$status]);
-
-        if (!empty($location)) {
-            header(
-                'Location: ' .
-                $_SERVER['REQUEST_SCHEME'] .
-                '://' . $_SERVER['HTTP_HOST'] .
-                ':' . $_SERVER['SERVER_PORT'] .
-                $location
-            );
+        $message = 'undefined response';
+        if (isset(self::$requestStatus[$this->responseStatus])) {
+            $message = self::$requestStatus[$this->responseStatus];
         }
 
         $this->response = $data;
+
+        header('HTTP/1.1 ' . $this->responseStatus . ' ' . $message);
     }
 
     /**
      * @param string $location
+     * @param int $status
      */
-    protected function redirect($location)
+    protected function redirect($location, $status = HTTP_REDIRECT_POST)
     {
-        $this->response(null, 303, $location);
+        $message = isset(self::$requestStatus[$status]) ? self::$requestStatus[$status] : '';
+        header('HTTP/1.1 ' . $status . ' ' . $message);
+        header(
+            'Location: ' .
+            $_SERVER['REQUEST_SCHEME'] .
+            '://' . $_SERVER['HTTP_HOST'] .
+            ':' . $_SERVER['SERVER_PORT'] .
+            $location
+        );
+        die();
     }
 
     /**
@@ -209,9 +217,10 @@ abstract class AbstractAPIRest
     public function processAPI()
     {
         if (method_exists($this, strtolower($this->method))) {
-            $this->response($this->{$this->method}($this->params));
+            $this->sendResponse($this->{$this->method}($this->params));
         } else {
-            $this->response(array('error' => 'invalid method ' . $this->method), 405);
+            $this->setResponseStatus(405, 'invalid method ' . $this->method);
+            $this->sendResponse(null);
         }
     }
 
@@ -332,6 +341,12 @@ abstract class AbstractAPIRest
         }
 
         return $data;
+    }
+
+    protected function setResponseStatus($code, $status)
+    {
+        $this->setRequestStatus($code, $status);
+        $this->responseStatus = $code;
     }
 
     /**
