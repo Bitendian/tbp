@@ -343,9 +343,15 @@ abstract class AbstractAPIRest
         return $data;
     }
 
-    protected function setResponseStatus($code, $status)
+    /**
+     * @param int $code
+     * @param string|null $status
+     */
+    protected function setResponseStatus($code, $status = null)
     {
-        $this->setRequestStatus($code, $status);
+        if ($status != null) {
+            $this->setRequestStatus($code, $status);
+        }
         $this->responseStatus = $code;
     }
 
