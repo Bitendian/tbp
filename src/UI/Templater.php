@@ -35,7 +35,7 @@ namespace Bitendian\TBP\UI;
  *
  * ##@@VALUE@@## is a valid clause, with Templater precedence that means "first replace with the value on context and
  * then make a translation of this replacement". This is valid for ##@@PROPERTY.VALUE@@## as well.
-*/
+ */
 class Templater extends AbstractRenderizable
 {
     private $source;
@@ -123,8 +123,11 @@ class Templater extends AbstractRenderizable
         } elseif (array_key_exists($property, $context_vars)) {
             // is context property
             if (!is_array($value) && is_object($context_vars[$property])) {
-                $value = $context_vars[$property]->__toString();
-                return true;
+                if (method_exists($context_vars[$property], '__toString')) {
+                    $value = $context_vars[$property]->__toString();
+                    return true;
+                }
+                return false;
             } elseif (is_array($value) && is_object($context_vars[$property])) {
                 return false;
             } elseif (!is_array($value) && is_array($context_vars[$property])) {
@@ -132,7 +135,7 @@ class Templater extends AbstractRenderizable
             } elseif (is_array($value) && is_array($context_vars[$property])) {
                 // if property is an array and we expect an array is matching
                 foreach ($context_vars[$property] as $item) {
-                    if (is_object($item)) {
+                    if (is_object($item) && method_exists($item, '__toString')) {
                         $value[] = $item->__toString();
                     } else {
                         $value[] = $item;
