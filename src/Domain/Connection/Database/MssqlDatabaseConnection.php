@@ -152,7 +152,7 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
     public function getEnumValues($table, $field)
     {
         // TODO: Implement getEnumValues() method.
-        return [];
+        return array();
     }
 
     /**

@@ -58,21 +58,21 @@ abstract class AbstractAPIRest
      *
      * @var callable[]
      */
-    protected $bodyParsers = [];
+    protected $bodyParsers = array();
 
     /**
      * The request URI
      *
      * @var array
      */
-    protected $path = [];
+    protected $path = array();
 
     /**
      * The request parameters
      *
      * @var array
      */
-    private $params = [];
+    private $params = array();
 
     /**
      * The API response
@@ -231,7 +231,7 @@ abstract class AbstractAPIRest
      */
     private function cleanInputs(&$data)
     {
-        $cleanInput = [];
+        $cleanInput = array();
 
         if (is_array($data)) {
             foreach ($data as $key => $value) {
@@ -320,7 +320,7 @@ abstract class AbstractAPIRest
             $parsed = $this->bodyParsers[$mediaType]($body);
 
             if (!is_null($parsed) && !is_object($parsed) && !is_array($parsed)) {
-                $message = _('Request body media type parser return value must be an array, an object, or null');
+                $message = 'Request body media type parser return value must be an array, an object, or null';
                 throw new TBPException($message, -1);
             }
             return $parsed;
@@ -337,7 +337,7 @@ abstract class AbstractAPIRest
     protected function parseBodyWithParams($data)
     {
         if (!is_null($data) && !is_object($data) && !is_array($data)) {
-            throw new TBPException(_('Parsed body value must be an array, an object, or null'));
+            throw new TBPException('Parsed body value must be an array, an object, or null');
         }
 
         return $data;

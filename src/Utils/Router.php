@@ -38,14 +38,14 @@ class Router
         foreach (self::$routes as $route => $routeObject) {
             foreach ($routeObject->urls as $lang => $url) {
                 $pregUrl = $url;
-                $vars = [];
+                $vars = array();
                 preg_match_all('*\{([^\}]+)\}*', $url, $vars);
                 foreach ($vars[0] as $var) {
                     $pregUrl = str_replace($var, '([^/]+)', $pregUrl);
                 }
 
-                $matches = [];
-                $urlVars = [];
+                $matches = array();
+                $urlVars = array();
 
                 if (preg_match('*^' . $pregUrl . '$*i', $uri, $matches) == 1) {
                     for ($i = 0; $i < count($vars[1]); $i++) {
@@ -53,13 +53,13 @@ class Router
                     }
 
                     if (!isset($routeObject->roles) || in_array($role, $routeObject->roles)) {
-                        return (object)[
+                        return (object) array(
                             "lang" => $lang,
                             "layout" => $routeObject->layout,
                             "module" => $routeObject->module,
                             "vars" => $urlVars,
                             "urlKey" => $route
-                        ];
+                        );
                     }
                 }
             }
@@ -77,20 +77,20 @@ class Router
     public static function getRoute($name, $lang)
     {
         if (!isset(self::$routes[$name])) {
-            throw new TBPException(_('route not found'));
+            throw new TBPException('route not found');
         }
 
         $route = self::$routes[$name];
         if (!isset($route->urls[$lang])) {
-            throw new TBPException(sprintf(_('no route for language %s found with name %s'), $lang, $name));
+            throw new TBPException(sprintf('no route for language %s found with name %s', $lang, $name));
         }
 
         $url = $route->urls[$lang];
-        $vars = [];
+        $vars = array();
         preg_match_all('*\{([^\}]+)\}*', $url, $vars);
         if (count($vars[0]) != func_num_args() - 2) {
             throw new TBPException(sprintf(
-                _('invalid URL params, expected %s but got %s'),
+                'invalid URL params, expected %s but got %s',
                 count($vars[0]),
                 (func_num_args() - 2)
             ));
@@ -110,7 +110,7 @@ class Router
     public static function getRouteUris($name)
     {
         if (!isset(self::$routes[$name])) {
-            throw new TBPException(_('route not found'));
+            throw new TBPException('route not found');
         }
 
         $route = self::$routes[$name];
@@ -132,11 +132,11 @@ class Router
 
         $route = self::$routes[$name];
         if (!isset($route->urls[$lang])) {
-            throw new TBPException(sprintf(_('no route for language %s found with name %s'), $lang, $name));
+            throw new TBPException(sprintf('no route for language %s found with name %s', $lang, $name));
         }
 
         $url = $route->urls[$lang];
-        $vars = [];
+        $vars = array();
         preg_match_all('*\{([^\}]+)\}*', $url, $vars);
 
         for ($i = 0; $i < count($vars[0]); $i++) {
