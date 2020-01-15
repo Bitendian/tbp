@@ -3,7 +3,7 @@
     "type": "library",
     "description": "Light framed PHP library",
     "keywords": ["tbp", "mysql", "postgres", "redis", "memcached", "component", "widget"],
-    "homepage": "http://www.bitendian.com/en/portfolio/tbp-5/",
+    "homepage": "http://www.bitendian.com/portfolio/tbp-3/",
     "license": "MIT",
     "minimum-stability": "dev",
     "authors": [
