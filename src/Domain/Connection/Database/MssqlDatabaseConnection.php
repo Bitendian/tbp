@@ -13,6 +13,7 @@ namespace Bitendian\TBP\Domain\Connection\Database;
 
 use \Bitendian\TBP\Domain\Connection\Interfaces\DatabaseConnectionInterface;
 use Bitendian\TBP\TBPException;
+use PDO;
 
 /**
  * Class with implementation of DatabaseConnectionInterface for MicrosoftSQL.
@@ -24,7 +25,7 @@ use Bitendian\TBP\TBPException;
 class MssqlDatabaseConnection implements DatabaseConnectionInterface
 {
     /**
-     * @var resource
+     * @var PDO
      */
     private $connection;
     /**
@@ -42,19 +43,16 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
     }
 
     /**
-     * @return false|resource
+     * @return PDO
      */
     private function createConnectionFromConfig()
     {
-        $connectionInfo  = array(
-            'Database' => $this->config->database,
-            'UID' => $this->config->uid,
-            'PWD' => $this->config->pwd,
-            'CharacterSet' => 'UTF-8',
-            'TransactionIsolation' => SQLSRV_TXN_READ_UNCOMMITTED
-        );
+        $connectionInfo = "sqlsrv:Server=" . $this->config->server . ";Database=" . $this->config->database;
+        $connection = new PDO($connectionInfo, $this->config->username, $this->config->password);
+        $connection->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+        $connection->setAttribute( PDO::SQLSRV_ATTR_QUERY_TIMEOUT, 30 );
 
-        return sqlsrv_connect($this->config->serverName, $connectionInfo);
+        return $connection;
     }
 
     /**
@@ -64,7 +62,7 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
     public function open()
     {
         if (!($this->connection = $this->createConnectionFromConfig())) {
-            throw new TBPException($this->connection->connect_error, $this->connection->connect_errno);
+            throw new TBPException($this->connection->errorInfo(), $this->connection->errorCode());
         }
     }
 
@@ -74,8 +72,8 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
      */
     public function close()
     {
-        if (!sqlsrv_close($this->connection)) {
-            throw new TBPException($this->connection->error, $this->connection->errno);
+        if (!$this->connection->close()) {
+            throw new TBPException($this->connection->errorInfo(), $this->connection->errorCode());
         }
     }
 
@@ -88,21 +86,21 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
      */
     public function select($sql, $params = array())
     {
-        if (!($statement = sqlsrv_prepare($this->connection, $sql, $params))) {
-            throw new TBPException($this->connection->error, $this->connection->errno);
+        if (!($statement = $this->connection->prepare($sql))) {
+            throw new TBPException($this->connection->errorInfo(), $this->connection->errorCode());
         }
 
-        if (sqlsrv_execute($statement) === false) {
-            throw new TBPException($this->connection->error, $this->connection->errno);
+        if ($statement->execute($params) === false) {
+            throw new TBPException($this->connection->errorInfo(), $this->connection->errorCode());
         }
 
         $result = array();
-        while ($row = sqlsrv_fetch_array($statement, SQLSRV_FETCH_ASSOC)) {
+        while ($row = $statement->fetchAll( SQLSRV_FETCH_ASSOC)) {
             $result[] = $row;
         }
 
-        if (sqlsrv_free_stmt($statement) === false) {
-            throw new TBPException($this->connection->error, $this->connection->errno);
+        if ($statement->closeCursor() === false) {
+            throw new TBPException($this->connection->errorInfo(), $this->connection->errorCode());
         }
 
         return $result;
@@ -117,16 +115,16 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
      */
     public function command($sql, $params = array())
     {
-        if (!($statement = sqlsrv_prepare($this->connection, $sql, $params))) {
-            throw new TBPException($this->connection->error, $this->connection->errno);
+        if (!($statement = $this->connection->prepare($sql))) {
+            throw new TBPException($this->connection->errorInfo(), $this->connection->errorCode());
         }
 
-        if (sqlsrv_execute($statement) === false) {
-            throw new TBPException($this->connection->error, $this->connection->errno);
+        if ($statement->execute($params) === false) {
+            throw new TBPException($this->connection->errorInfo(), $this->connection->errorCode());
         }
 
-        if (sqlsrv_free_stmt($statement) === false) {
-            throw new TBPException($this->connection->error, $this->connection->errno);
+        if ($statement->closeCursor() === false) {
+            throw new TBPException($this->connection->errorInfo(), $this->connection->errorCode());
         }
 
         return true;
@@ -161,8 +159,8 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
      */
     public function begin()
     {
-        if (sqlsrv_begin_transaction($this->connection) === false) {
-            throw new TBPException($this->connection->error, $this->connection->errno);
+        if ($this->connection->beginTransaction() === false) {
+            throw new TBPException($this->connection->errorInfo(), $this->connection->errorCode());
         }
     }
 
@@ -172,8 +170,8 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
      */
     public function commit()
     {
-        if (sqlsrv_commit($this->connection) === false) {
-            throw new TBPException($this->connection->error, $this->connection->errno);
+        if ($this->connection->commit() === false) {
+            throw new TBPException($this->connection->errorInfo(), $this->connection->errorCode());
         }
     }
 
@@ -183,8 +181,8 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
      */
     public function rollback()
     {
-        if (sqlsrv_rollback($this->connection) === false) {
-            throw new TBPException($this->connection->error, $this->connection->errno);
+        if ($this->connection->rollBack() === false) {
+            throw new TBPException($this->connection->errorInfo(), $this->connection->errorCode());
         }
     }
 }
