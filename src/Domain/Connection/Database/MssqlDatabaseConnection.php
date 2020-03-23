@@ -95,7 +95,7 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
         }
 
         $result = array();
-        while ($row = $statement->fetchAll( SQLSRV_FETCH_ASSOC)) {
+        while ($row = $statement->fetch( SQLSRV_FETCH_ASSOC)) {
             $result[] = $row;
         }
 
