@@ -137,7 +137,15 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
      */
     public function lastInsertId($table = null, $field = null)
     {
-        // TODO: Implement lastInsertId() method.
+        if (isset($table)) {
+            $sql = "SELECT IDENT_CURRENT('$table') AS ID";
+        } else {
+            $sql = "SELECT @@IDENTITY AS ID";
+        }
+        $result = $this->select($sql);
+        if (count($result) == 1) {
+            return $result[0]["ID"];
+        }
         return 0;
     }
 
