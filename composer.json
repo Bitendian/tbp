@@ -21,10 +21,5 @@
     },
     "autoload": {
         "psr-4": {"Bitendian\\TBP\\": "src/"}
-    },
-    "extra": {
-        "branch-alias": {
-            "0.9-rc": "composer"
-        }
     }
 }
