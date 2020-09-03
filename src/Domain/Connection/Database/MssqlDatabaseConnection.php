@@ -25,6 +25,10 @@ use PDO;
 class MssqlDatabaseConnection implements DatabaseConnectionInterface
 {
     /**
+     * @var int
+     */
+    public $timeOutInSeconds = 30;
+    /**
      * @var PDO
      */
     private $connection;
@@ -50,7 +54,7 @@ class MssqlDatabaseConnection implements DatabaseConnectionInterface
         $connectionInfo = "sqlsrv:Server=" . $this->config->server . ";Database=" . $this->config->database;
         $connection = new PDO($connectionInfo, $this->config->username, $this->config->password);
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $connection->setAttribute(PDO::SQLSRV_ATTR_QUERY_TIMEOUT, 30);
+        $connection->setAttribute(PDO::SQLSRV_ATTR_QUERY_TIMEOUT, $this->timeOutInSeconds);
         $connection->setAttribute(PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE, true);
 
         return $connection;
