@@ -27,6 +27,7 @@ abstract class AbstractAPIRest
         400 => 'Bad Request',
         404 => 'Not Found',
         405 => 'Method Not Allowed',
+        422 => 'Unprocessable Entity',
         500 => 'Internal Server Error'
     );
 

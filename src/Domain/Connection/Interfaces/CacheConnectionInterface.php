@@ -64,7 +64,7 @@ interface CacheConnectionInterface
      * @param $value
      * @return mixed
      */
-    public function store($key, $value);
+    public function store($key, $value, $ttl = null);
 
     /**
      * gets a key value

@@ -90,9 +90,12 @@ class RedisCacheConnection implements CacheConnectionInterface
         return $this->connection->flushdb();
     }
 
-    public function store($key, $value)
+    public function store($key, $value, $ttl = null)
     {
         return $this->connection->set($key, $value);
+        if (isset($ttl)) {
+            $this->connection->expire($key, $ttl);
+        }
     }
 
     public function get($key)
