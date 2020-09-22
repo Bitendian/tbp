@@ -203,11 +203,7 @@ abstract class AbstractAPIRest
         $message = isset(self::$requestStatus[$status]) ? self::$requestStatus[$status] : '';
         header('HTTP/1.1 ' . $status . ' ' . $message);
         header(
-            'Location: ' .
-            $_SERVER['REQUEST_SCHEME'] .
-            '://' . $_SERVER['HTTP_HOST'] .
-            ':' . $_SERVER['SERVER_PORT'] .
-            $location
+            'Location: ' . $location
         );
         die();
     }
