@@ -2,7 +2,7 @@
     "name": "bitendian/tbp",
     "type": "library",
     "description": "Light framed PHP library",
-    "keywords": ["tbp", "mysql", "postgres", "redis", "memcached", "component", "widget"],
+    "keywords": ["tbp", "mysql", "postgres", "sqlserver", "redis", "memcached", "component", "widget"],
     "homepage": "http://www.bitendian.com/portfolio/tbp-3/",
     "license": "MIT",
     "minimum-stability": "dev",
@@ -16,10 +16,17 @@
     "require": {
         "php": ">=5.3.2"
     },
+    "require-dev": {
+        "php": "^7.3",
+        "phpunit/phpunit": "^9"
+    },
     "suggest": {
         "predis/predis": "Redis connection implementation"
     },
     "autoload": {
-        "psr-4": {"Bitendian\\TBP\\": "src/"}
+        "psr-4": {
+            "Bitendian\\TBP\\": "src/",
+            "Bitendian\\TBP\\Tests\\": "tests/src/"
+        }
     }
 }

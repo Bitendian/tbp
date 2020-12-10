@@ -1,7 +1,16 @@
 # Created by .ignore support plugin (hsz.mobi)
 
+# PHPStorm IDE
 .idea
 
+# composer files
 composer.phar
+composer.lock
 
+# local folder for development
 vendor
+
+# local docker files for testing purpose
+Dockerfile
+docker-compose.yml
+auth.json
