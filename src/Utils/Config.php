@@ -12,6 +12,7 @@
 namespace Bitendian\TBP\Utils;
 
 use Bitendian\TBP\TBPException as TBPException;
+use stdClass;
 
 /**
  * Class Config to manage app config property files.
@@ -31,6 +32,8 @@ class Config
 {
     const SEPARATOR = '=';
     const COMMENT = '#';
+    const ENVIRONMENT_PREFIX = '$';
+    const ENVIRONMENT_DEFAULT_VALUE_SEPARATOR = ':';
 
     // static cache for already loaded folders
     private static $folders = array();
@@ -80,8 +83,8 @@ class Config
      */
     private static function endsWidth($fileName, $extension)
     {
-        $fileNameLength = \strlen($fileName);
-        $extensionLength = \strlen($extension);
+        $fileNameLength = strlen($fileName);
+        $extensionLength = strlen($extension);
         if ($extensionLength >= $fileNameLength) {
             return false;
         }
@@ -90,22 +93,26 @@ class Config
 
     /**
      * @param string $filename
-     * @return \stdClass
+     * @return stdClass
      */
     private static function createConfigObject($filename)
     {
-        $tmp = new \stdClass();
+        $tmp = new stdClass();
         $link = fopen($filename, 'r');
         while ($data = fgetcsv($link, 0, self::SEPARATOR)) {
             if (count($data) > 1) {
                 $data[0] = trim($data[0]);
                 if (strlen($data[0]) > 0 && $data[0][0] != self::COMMENT) {
-                    $value = trim($data[0]);
-                    $tmp->$value = trim(implode(self::SEPARATOR, array_slice($data, 1)));
-                    if (strtolower($tmp->$value) == "true") {
-                        $tmp->$value = true;
-                    } elseif (strtolower($tmp->$value) == "false") {
-                        $tmp->$value = false;
+                    $attributeName = trim($data[0]);
+                    $attributeValue = trim(implode(self::SEPARATOR, array_slice($data, 1)));
+                    if (self::isEnvironmentVariable($attributeValue)) {
+                        $attributeValue = self::getEnvironmentVariableValue($attributeValue);
+                    }
+                    $tmp->$attributeName = $attributeValue;
+                    if (strtolower($tmp->$attributeName) == "true") {
+                        $tmp->$attributeName = true;
+                    } elseif (strtolower($tmp->$attributeName) == "false") {
+                        $tmp->$attributeName = false;
                     }
                 }
             }
@@ -114,10 +121,56 @@ class Config
         return $tmp;
     }
 
+    private static function isEnvironmentVariable($value)
+    {
+        if (strlen($value) < 2) {
+            return false;
+        }
+
+        return $value[0] === self::ENVIRONMENT_PREFIX;
+    }
+
+    private static function getEnvironmentVariableName($rawName)
+    {
+        $data = explode(self::ENVIRONMENT_DEFAULT_VALUE_SEPARATOR, $rawName);
+        return substr(trim($data[0]), 1);
+    }
+
+    private static function hasEnvironmentVariableDefaultValue($rawName)
+    {
+        $name = trim($rawName);
+        $position = stripos($name, self::ENVIRONMENT_DEFAULT_VALUE_SEPARATOR, 0);
+        return ($position > 0 && $position < strlen($name));
+    }
+
+    private static function getEnvironmentVariableDefaultValue($rawName)
+    {
+        if (!self::hasEnvironmentVariableDefaultValue($rawName)) {
+            return '';
+        }
+
+        $data = explode(self::ENVIRONMENT_DEFAULT_VALUE_SEPARATOR, $rawName);
+        if (count($data) < 2) {
+            return '';
+        }
+
+        return trim(implode(self::ENVIRONMENT_DEFAULT_VALUE_SEPARATOR, array_slice($data, 1)));;
+    }
+
+    private static function getEnvironmentVariableValue($attributeValue)
+    {
+        $envName = self::getEnvironmentVariableName($attributeValue);
+        $value = getenv($envName, false);
+        if ($value === false) {
+            return self::getEnvironmentVariableDefaultValue($attributeValue);
+        }
+        return $value;
+    }
+
     /**
      * Get configuration object or null if config file not found.
      * @param string $file
-     * @return null|\stdClass
+     * @return null|stdClass
      */
     public function getConfig($file)
     {

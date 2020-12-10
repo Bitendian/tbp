@@ -73,6 +73,26 @@ class ConfigTest extends TestCase
     }
 
     /**
+     * Test environment variables attributes and values.
+     */
+    public function testEnvVar()
+    {
+        $folder = __DIR__ . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR;
+        $file = 'env_vars';
+
+        $config = $this->loadConfig($folder, $file);
+
+        for ($i = 1; $i <= 4; $i++) {
+            $this->assertTrue(isset($config->{'foo' . $i}), "expected foo$i attribute not found");
+        }
+
+        $this->assertEquals(1, $config->foo1);
+        $this->assertEquals(2, $config->foo2);
+        $this->assertEquals('', $config->foo3);
+        $this->assertEquals(4, $config->foo4);
+    }
+
+    /**
      * @param string $folder Absolute path
      * @param string $file Filename
      * @return stdClass
