@@ -18,7 +18,7 @@ class Router
     /**
      * @var array
      */
-    private static $routes;
+    protected static $routes;
 
     /**
      * @param array $routes
