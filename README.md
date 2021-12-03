@@ -79,3 +79,27 @@ class MyDomain extends AbstractSqliteDomain
     }
 }
 ```
+#### Usage
+sample straight-forward code:
+```php
+$domain = new MyDomain();
+$results = $domain->getRegisters(9391); // get an array
+```
+sample code with transactions:
+```php
+$domain = new MyDomain();
+try {
+    $domain->begin();
+    
+    $lastId = $domain->addRegister(1, 2);
+    echo "first query: last inserted id: $lastId\n";
+    
+    $lastId = $domain->addRegister(3, 4);
+    echo "second query: last inserted id: $lastId\n";
+    
+    $domain->commit();
+} catch (Exception $e) {
+    $domain->rollback();
+    echo "ERROR: " . $e->getMessage() . "\n";
+}
+```
