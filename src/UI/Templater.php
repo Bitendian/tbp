@@ -160,7 +160,7 @@ class Templater extends AbstractRenderizable
     {
         while (preg_match(self::getTagsRegexp(), $this->result, $groups) > 0) {
             $property = strtolower($groups[1]);
-            $value = null;
+            $value = '';
             foreach ($this->context as &$context) {
                 if (self::rReplaceProperty($context, $property, $value)) {
                     break;
