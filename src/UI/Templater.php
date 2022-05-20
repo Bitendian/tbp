@@ -166,7 +166,9 @@ class Templater extends AbstractRenderizable
                     break;
                 }
             }
-
+            if (empty($value)) {
+                $value = '';
+            }
             $this->result = str_replace($groups[0], $value, $this->result);
         }
     }
